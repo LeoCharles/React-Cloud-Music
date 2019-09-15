@@ -1,4 +1,6 @@
 import React from 'react'
+import { Provider } from 'react-redux'
+import store from './store'
 import { GlobalStyle } from './style'
 import { IconStyle } from '@/assets/icon/iconfont/iconfont'
 import { BrowserRouter } from 'react-router-dom'
@@ -7,11 +9,13 @@ import { renderRoutes } from 'react-router-config'// 将路由表渲染为 Route
 
 function App() {
   return (
-    <BrowserRouter>
-      <GlobalStyle></GlobalStyle>
-      <IconStyle></IconStyle>
-      {renderRoutes(routes)}
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <GlobalStyle></GlobalStyle>
+        <IconStyle></IconStyle>
+        {renderRoutes(routes)}
+      </BrowserRouter>
+    </Provider>
   );
 }
 
