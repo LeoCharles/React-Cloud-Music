@@ -1,36 +1,48 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from './store/actions'
 import Slider from 'components/Silder'
 import RecommendList from 'components/RecommendList'
 import Scroll from 'components/Scroll'
 import { Content } from './style'
 
-const bannerList = [
-  { imageUrl: 'http://p1.music.126.net/vV-ItuMoip0S9O5bTamcBw==/109951164365515656.jpg'},
-  { imageUrl: 'http://p1.music.126.net/5LIKqhDXEDQ6zZ7NRIbMKA==/109951164364817784.jpg'},
-  { imageUrl: 'http://p1.music.126.net/A4ka0KmZnCV3qHTiIbSYAw==/109951164365514164.jpg'},
-  { imageUrl: 'http://p1.music.126.net/jhTr11XIiTpl8bRa8JPuNA==/109951164364818431.jpg'},
-]
+function Recommend(props) {
+  const { bannerList, recommendList } = props
+  const { getBannerListDispatch, getRecommendListDispatch } = props
 
-const recommendList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => {
-  return {
-    id: item,
-    picUrl: 'https://p2.music.126.net/CKY9WSM1-1SHMc8wRJyccQ==/109951164353129687.jpg?param=300x300',
-    playCount: 1656193,
-    name: '听歌思人 | 所幸还能与你共伫同一片月光下'
-  }
-})
+  useEffect(() => {
+    getBannerListDispatch()
+    getRecommendListDispatch()
+    // eslint-disable-next-line
+  }, [])
 
-function Recommend() {
+  const bannerListJS = bannerList ? bannerList.toJS() : []
+  const recommendListJS = recommendList ? recommendList.toJS() : []
+
   return (
     <Content>
       <Scroll>
         <div>
-          <Slider bannerList={bannerList}/>
-          <RecommendList recommendList={recommendList}/>
+          <Slider bannerList={bannerListJS}/>
+          <RecommendList recommendList={recommendListJS}/>
         </div>
       </Scroll>
     </Content>
   )
 }
 
-export default  React.memo(Recommend)
+const mapStateToProps = (state) => ({
+  bannerList: state.getIn(['recommend', 'bannerList']),
+  recommendList: state.getIn(['recommend', 'recommendList'])
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getBannerListDispatch() {
+    dispatch(actionCreators.getBannerList())
+  },
+  getRecommendListDispatch() {
+    dispatch(actionCreators.getRecommendList())
+  }
+})
+
+export default  connect(mapStateToProps, mapDispatchToProps)(React.memo(Recommend))

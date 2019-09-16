@@ -3,10 +3,10 @@ import axios from 'axios'
 let baseURL = ''
 if (process.env.NODE_ENV !== 'production') {
   // 开发环境
-  baseURL = ''
+  baseURL = 'http://192.168.31.166:3300'
 } else {
   // 生产环境
-  baseURL = ''
+  baseURL = 'http://192.168.31.166:3300'
 }
 
 const request = axios.create({
