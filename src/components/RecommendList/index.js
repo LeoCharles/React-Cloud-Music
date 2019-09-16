@@ -1,5 +1,6 @@
 import React from 'react'
 import { ListWrapper, List, ListItem } from './style'
+import { getCount } from '@/utils'
 
 function RecommendList(props) {
   const { recommendList } = props
@@ -16,7 +17,7 @@ function RecommendList(props) {
                   <img src={item.picUrl + '?param=300x300'} width="100%" height="100%" alt="music" />
                   <div className="play-count">
                     <i className="iconfont play">&#xe885;</i>
-                    <span className="count">{'10万'}</span>
+                    <span className="count">{getCount(item.playCount)}</span>
                   </div>
                 </div>
                 <div className="desc">{item.name}</div>
