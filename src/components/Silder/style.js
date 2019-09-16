@@ -10,18 +10,10 @@ export const SliderContainer = styled.div `
   background-color: #fff;
   .mask {
     position: absolute;
+    top: -300px;
     width: 100%;
-    height: 50%;
+    height: 400px;
     background-color: ${global['theme-color']};
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      bottom: -60px;
-      border-radius: 0 0 50% 50%;
-      background-color: ${global['theme-color']};
-    }
   }
   .slider-container {
     position: relative;
