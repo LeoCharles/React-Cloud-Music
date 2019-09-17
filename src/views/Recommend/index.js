@@ -6,9 +6,10 @@ import RecommendList from 'components/RecommendList'
 import Scroll from 'components/Scroll'
 import { forceCheck } from 'react-lazyload' // 检查是否进入可视区
 import { Content } from './style'
+import Loading from 'components/Loading'
 
 function Recommend(props) {
-  const { bannerList, recommendList } = props
+  const { bannerList, recommendList, enterLoading } = props
   const { getBannerListDispatch, getRecommendListDispatch } = props
 
   useEffect(() => {
@@ -22,6 +23,7 @@ function Recommend(props) {
 
   return (
     <Content>
+      { enterLoading ? <Loading /> : null }
       <Scroll onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}/>
@@ -34,7 +36,8 @@ function Recommend(props) {
 
 const mapStateToProps = (state) => ({
   bannerList: state.getIn(['recommend', 'bannerList']),
-  recommendList: state.getIn(['recommend', 'recommendList'])
+  recommendList: state.getIn(['recommend', 'recommendList']),
+  enterLoading: state.getIn(['recommend', 'enterLoading'])
 })
 
 const mapDispatchToProps = (dispatch) => ({

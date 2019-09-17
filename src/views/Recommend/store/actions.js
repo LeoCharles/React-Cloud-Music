@@ -12,10 +12,16 @@ export const changeRecommend = (data) => ({
   data: fromJS(data)
 })
 
+export const changeEnterLoading = (data) => ({
+  type: actionTypes.CHANGE_ENTER_LOADING,
+  data
+})
+
 export const getBannerList = () => {
   return (dispatch) => {
     getBanner().then(res => {
       dispatch(changeBanner(res.banners))
+      dispatch(changeEnterLoading(false))
     }).catch(err => {
       console.log(err);
     })
