@@ -9,3 +9,13 @@ export const getBanner = () => {
 export const getRecommend = () => {
   return request.get('/personalized')
 }
+
+// 获取热门歌手
+export const getHotSingerList = (count) => {
+  return request.get(`/top/artists?offset=${count}`)
+}
+
+// 获取歌手列表
+export const getSingerList = (category, alpha, count) => {
+  return request.get(`/artist/list?cat=${category}&initial=${alpha}&offset=${count}`)
+}
