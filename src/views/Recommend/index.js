@@ -4,6 +4,7 @@ import * as actionCreators from './store/actions'
 import Slider from 'components/Silder'
 import RecommendList from 'components/RecommendList'
 import Scroll from 'components/Scroll'
+import { forceCheck } from 'react-lazyload' // 检查是否进入可视区
 import { Content } from './style'
 
 function Recommend(props) {
@@ -21,7 +22,7 @@ function Recommend(props) {
 
   return (
     <Content>
-      <Scroll>
+      <Scroll onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}/>
           <RecommendList recommendList={recommendListJS}/>
