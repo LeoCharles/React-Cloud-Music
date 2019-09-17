@@ -13,11 +13,17 @@ function Recommend(props) {
   const { getBannerListDispatch, getRecommendListDispatch } = props
 
   useEffect(() => {
-    getBannerListDispatch()
-    getRecommendListDispatch()
+    if (!bannerList.size) {
+      getBannerListDispatch()
+    }
+    if (!recommendList.size) {
+      getRecommendListDispatch()
+    }
+    
     // eslint-disable-next-line
   }, [])
 
+  // 将 immutable 数据结构转成 JS 数据结构
   const bannerListJS = bannerList ? bannerList.toJS() : []
   const recommendListJS = recommendList ? recommendList.toJS() : []
 

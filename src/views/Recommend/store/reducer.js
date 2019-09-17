@@ -1,5 +1,5 @@
 import * as actionTypes from './constants'
-import { fromJS } from 'immutable'
+import { fromJS } from 'immutable' // 将 JS 数据结构转成 immutable 数据结构
 
 const defaultState = fromJS({
   bannerList: [],
