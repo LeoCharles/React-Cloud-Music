@@ -14,12 +14,12 @@ function Singers() {
           title="分类(默认热门):"
           list={singerTypes}
           current={singerType}
-          onSelect={(item) => setSingerType(item)} />
-        <HorizonList 
+          onSelect={(item) => setSingerType(item.key)} />
+        <HorizonList
           title="首字母:"
           list={alphaTypes}
           current={alpha}
-          onSelect={(item) => setAlpha(item)}/>
+          onSelect={(item) => setAlpha(item.key)}/>
       </NavContainer>
     </div>
   )

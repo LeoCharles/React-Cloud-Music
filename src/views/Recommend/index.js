@@ -19,7 +19,7 @@ function Recommend(props) {
     if (!recommendList.size) {
       getRecommendListDispatch()
     }
-    
+
     // eslint-disable-next-line
   }, [])
 

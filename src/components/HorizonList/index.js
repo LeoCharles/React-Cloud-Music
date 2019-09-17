@@ -4,24 +4,45 @@ import Scroll from 'components/Scroll'
 import { ListWrapper, ListItem } from './style'
 
 function HorizonList(props) {
+  const [refresh, setRefresh] = useState(false)
+
+  const horizonListRef = useRef(null)
+
   const { list, current, title } = props
   const { onSelect } = props
 
+  // 计算水平列表总宽度
+  useEffect(() => {
+    let totalWidth = 0
+    const horizonListDOM = horizonListRef.current
+    const itemElems = horizonListDOM.querySelectorAll('span')
+
+    Array.from(itemElems).forEach(ele => {
+      totalWidth += ele.offsetWidth
+    })
+
+    horizonListDOM.style.width = `${totalWidth}px`
+    setRefresh(true)
+  }, [refresh])
+
   return (
-    <Scroll direct="horizon">
-      <ListWrapper>
-        <span className="title">{title}</span>
-        {
-          list.map(item => (
-            <ListItem 
-              key={item.key}
-              className={current === item.key ? 'item selected' : 'item'}
-              onClick={() => onSelect(item)}>
-              {item.txt}
-            </ListItem>
-          ))
-        }
-      </ListWrapper>
+    <Scroll direction="horizontal" refresh={refresh}>
+      <div ref={horizonListRef}>
+        <ListWrapper>
+          <span className="title">{title}</span>
+          {
+            list.map(item => (
+              <ListItem
+                key={item.key}
+                className={current === item.key ? 'item selected' : 'item'}
+                onClick={() => onSelect(item)}>
+                {item.txt}
+              </ListItem>
+            ))
+          }
+        </ListWrapper>
+      </div>
+
     </Scroll>
   )
 }

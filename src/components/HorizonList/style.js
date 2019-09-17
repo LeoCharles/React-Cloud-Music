@@ -12,7 +12,7 @@ export const ListWrapper = styled.div `
     padding: 5px 0;
     margin-right: 5px;
     font-size:  ${global['font-size-m']};
-    color: #808080;
+    color: ${global['font-color-gray']};
     vertical-align: middle;
   }
 `
