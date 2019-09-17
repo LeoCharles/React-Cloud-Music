@@ -42,7 +42,6 @@ function HorizonList(props) {
           }
         </ListWrapper>
       </div>
-
     </Scroll>
   )
 }
