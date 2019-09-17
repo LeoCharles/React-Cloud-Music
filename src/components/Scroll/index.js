@@ -17,7 +17,7 @@ const Scroll = forwardRef((props, ref) => {
   // 创建 BScroll 实例
   useEffect(() => {
     const scroll = new BScroll(scrollContainerRef.current, {
-      scrollX: direction === 'horizental',
+      scrollX: direction === 'horizontal',
       scrollY: direction === 'vertical',
       probeType: 3, // 实时(包括滚动动画时)派发 scroll 事件
       click,
@@ -122,7 +122,7 @@ Scroll.defaultProps = {
 
 // Scroll 接受的参数
 Scroll.proTypes = {
-  direction: PropTypes.oneOf(['vertical', 'horizental']), // 滚动方向
+  direction: PropTypes.oneOf(['vertical', 'horizontal']), // 滚动方向
   click: PropTypes.bool, // 是否支持点击
   refresh: PropTypes.bool, // 是否刷新
   onScroll: PropTypes.func, // 滚动事件回调
