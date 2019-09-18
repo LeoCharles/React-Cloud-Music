@@ -1,0 +1,7 @@
+export const CHANGE_CATEGORY = 'singers/change_category'
+export const CHANGE_ALPHA = 'singers/change_alpha'
+export const CHANGE_SINGER_LIST = 'singers/change_singer_list'
+export const CHANGE_PAGE_COUNT = 'singers/change_page_count'
+export const CHANGE_ENTER_LOADING = 'singers/change_enter_loading'
+export const CHANGE_PULLUP_LOADING = 'singers/change_pullup_loading'
+export const CHANGE_PULLDOWN_LOADING = 'singers/change_pulldown_loading'

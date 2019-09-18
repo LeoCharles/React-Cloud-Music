@@ -1,5 +1,5 @@
 // 歌手中路
-export const singerTypes = [
+export const categoryTypes = [
   {
     txt: "华语男",
     key: "1001"

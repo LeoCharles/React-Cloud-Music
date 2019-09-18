@@ -11,11 +11,11 @@ export const getRecommend = () => {
 }
 
 // 获取热门歌手
-export const getHotSingerList = (count) => {
+export const getTopArtists = (count) => {
   return request.get(`/top/artists?offset=${count}`)
 }
 
 // 获取歌手列表
-export const getSingerList = (category, alpha, count) => {
+export const getArtistList = (category, alpha, count) => {
   return request.get(`/artist/list?cat=${category}&initial=${alpha}&offset=${count}`)
 }

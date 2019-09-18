@@ -8,7 +8,7 @@ function HorizonList(props) {
 
   const horizonListRef = useRef(null)
 
-  const { list, current, title } = props
+  const { list, selected, title } = props
   const { onSelect } = props
 
   // 计算水平列表总宽度
@@ -34,7 +34,7 @@ function HorizonList(props) {
             list.map(item => (
               <ListItem
                 key={item.key}
-                className={current === item.key ? 'item selected' : 'item'}
+                className={selected === item.key ? 'item selected' : 'item'}
                 onClick={() => onSelect(item)}>
                 {item.txt}
               </ListItem>
@@ -49,14 +49,14 @@ function HorizonList(props) {
 HorizonList.defaultProps = {
   list: [],
   title: '',
-  current: '',
+  selected: '',
   onSelect: null
 }
 
 HorizonList.propTypes = {
   list: PropTypes.array, // 列表数据
   title: PropTypes.string, // 列表左边的标题
-  current: PropTypes.string, // 当前的 item 值
+  selected: PropTypes.string, // 当前选中的 item 值
   onSelect: PropTypes.func, // 点击 item 的回调
 }
 
