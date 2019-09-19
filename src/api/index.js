@@ -19,3 +19,8 @@ export const getTopArtists = (count) => {
 export const getArtistList = (category, alpha, count) => {
   return request.get(`/artist/list?cat=${category}&initial=${alpha}&offset=${count}`)
 }
+
+// 获取榜单内容摘要
+export const getTopListDetail = () => {
+  return Request.get('/toplist/detail')
+}
