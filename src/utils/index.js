@@ -24,3 +24,12 @@ export const getCount = (count) => {
     return Math.floor(count / 10000000) / 10 + '亿'
   }
 }
+
+// 处理榜单，返回第一个全球榜索引
+export const filterIndex = (list) => {
+  for (let i = 0; i < list.length - 1; i++) {
+    if (list[i].tracks.length && !list[i + 1].tracks.length) {
+      return i + 1
+    }
+  }
+}

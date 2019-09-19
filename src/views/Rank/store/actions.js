@@ -15,8 +15,13 @@ export const changeLoading = (data) => ({
 export const getRankList = () => {
   return (dispatch) => {
     getTopListDetail().then(res => {
-      dispatch(changeRankList(res.list))
-      dispatch(changeLoading(false))
+      if(res.code === 200) {
+        dispatch(changeRankList(res.list))
+        dispatch(changeLoading(false))
+      } else {
+        dispatch(changeRankList([]))
+        dispatch(changeLoading(false))
+      }
     }).catch(err => {
       console.log(err);
     })

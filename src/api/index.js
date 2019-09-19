@@ -22,5 +22,5 @@ export const getArtistList = (category, alpha, count) => {
 
 // 获取榜单内容摘要
 export const getTopListDetail = () => {
-  return Request.get('/toplist/detail')
+  return request.get('/toplist/detail')
 }
