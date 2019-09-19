@@ -49,7 +49,6 @@ function Singers(props) {
   const renderSingerList = () => {
     // 将 immutable 数据结构 转换成 JS 数据结构
     const singerListJS = singerList ? singerList.toJS() : []
-    console.log(singerListJS)
     return (
       <SingerList>
         {
@@ -68,6 +67,7 @@ function Singers(props) {
 
   return (
     <div>
+      <Loading loading={enterLoading}/>
       <NavContainer>
         <HorizonList
           title="分类(默认热门):"
@@ -83,7 +83,9 @@ function Singers(props) {
       <SingerContainer>
         <Scroll
           pullUp={handlePullUp}
-          pullDown={handlePullDown}>
+          pullDown={handlePullDown}
+          pullUpLoading={pullUpLoading}
+          pullDownLoading={pullDownLoading}>
           { renderSingerList() }
         </Scroll>
       </SingerContainer>
@@ -96,7 +98,7 @@ const mapStateToProps = (state) => ({
   alpha: state.getIn(['singers', 'alpha']),
   singerList: state.getIn(['singers', 'singerList']),
   pageCount: state.getIn(['singers', 'pageCount']),
-  enterLoading: state.getIn(['singers', 'singerList']),
+  enterLoading: state.getIn(['singers', 'enterLoading']),
   pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
   pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
 })

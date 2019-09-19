@@ -1,5 +1,6 @@
 import React, { forwardRef, useState,useEffect, useRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import Loading from 'components/Loading'
 import { ScrollContainer } from './style'
 import BScroll from 'better-scroll'
 
@@ -102,6 +103,7 @@ const Scroll = forwardRef((props, ref) => {
   return (
     <ScrollContainer ref={scrollContainerRef}>
       {props.children}
+      <Loading loading={pullDownLoading}/>
     </ScrollContainer>
   )
 })
@@ -121,7 +123,7 @@ Scroll.defaultProps = {
 }
 
 // Scroll 接受的参数
-Scroll.proTypes = {
+Scroll.propTypes = {
   direction: PropTypes.oneOf(['vertical', 'horizontal']), // 滚动方向
   click: PropTypes.bool, // 是否支持点击
   refresh: PropTypes.bool, // 是否刷新

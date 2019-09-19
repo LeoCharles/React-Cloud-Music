@@ -51,14 +51,11 @@ export const getHotSingerList = () => {
     const singerList = getState().getIn(['singers', 'singerList']).toJS()
     getTopArtists(pageCount).then(res => {
       if (res.code === 200) {
-        if (pageCount === 0 ) {
-          dispatch(changeSingerList(res.artists))
-          dispatch(changeEnterLoading(false))    // 关闭进场 loading
-        } else {
-          dispatch(changeSingerList([...singerList, ...res.artists]))
-          dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
-          dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
-        }
+        const data = pageCount === 0 ? res.artists : [...singerList, ...res.artists]
+        dispatch(changeSingerList(data))
+        dispatch(changeEnterLoading(false))    // 关闭进场 loading
+        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
+        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
       } else {
         dispatch(changeSingerList([]))
         dispatch(changeEnterLoading(false))    // 关闭进场 loading
@@ -80,16 +77,16 @@ export const getSingerList = () => {
     const singerList = getState().getIn(['singers', 'singerList']).toJS()
     getArtistList(category, alpha, pageCount).then(res => {
       if (res.code === 200) {
-        if (pageCount === 0) {
-          dispatch(changeSingerList(res.artists))
-          dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
-        } else {
-          dispatch(changeSingerList([...singerList, res.artists]))
-          dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
-        }
+        const data = pageCount === 0 ? res.artists : [...singerList, ...res.artists]
+        dispatch(changeSingerList(data))
+        dispatch(changeEnterLoading(false))    // 关闭进场 loading
+        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
+        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
       } else {
         dispatch(changeSingerList([]))
+        dispatch(changeEnterLoading(false))    // 关闭进场 loading
         dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
+        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
       }
     }).catch(err => {
       console.log(err)

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled, { keyframes } from 'styled-components'
 import global from '@/assets/global-style.js'
 
@@ -12,6 +13,10 @@ const transform = keyframes `
 `
 
 const LoadingWrapper = styled.div `
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  margin: auto;
+  z-index: 99;
   .circle {
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
@@ -28,13 +33,23 @@ const LoadingWrapper = styled.div `
   }
 `
 
-function Loading() {
+function Loading(props) {
+  const { loading } = props
+  console.log(loading)
   return (
-    <LoadingWrapper>
+    <LoadingWrapper  style={loading ? {display: 'block'} : {display: 'none'}}>
       <div className="circle"></div>
       <div className="circle"></div>
     </LoadingWrapper>
   )
+}
+
+Loading.defaultProps = {
+  loaidng: false
+}
+
+Loading.propTypes = {
+  loaidng: PropTypes.bool
 }
 
 export default React.memo(Loading)
