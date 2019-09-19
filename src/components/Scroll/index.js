@@ -19,12 +19,12 @@ const Scroll = forwardRef((props, ref) => {
 
   // 上拉回调加防抖
   const pullUpDebounce = useMemo(() => {
-    return debounce(pullUp, 300)
+    return debounce(pullUp, 500)
   }, [pullUp])
 
   // 下拉回调加防抖
   const pullDownDebounce = useMemo(() => {
-    return debounce(pullDown, 300)
+    return debounce(pullDown, 500)
   }, [pullDown])
 
   // 创建 BScroll 实例

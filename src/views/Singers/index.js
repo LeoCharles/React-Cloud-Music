@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import Scroll from 'components/Scroll'
@@ -9,6 +9,7 @@ import { categoryTypes, alphaTypes } from '@/assets/config'
 import { NavContainer, SingerContainer, SingerList, SingerItem } from './style'
 
 function Singers(props) {
+  const scrollRef = useRef(null) // 传入 ref 用于调用 scroll 组件的方法
 
   const { category, alpha, singerList, pageCount, enterLoading, pullUpLoading, pullDownLoading } = props
 
@@ -26,12 +27,16 @@ function Singers(props) {
   const handeleSelectCategory = (value) => {
     if (category === value.key) return
     updateCategoryDispatch(value.key)
+    // 刷新并滚动到顶部
+    scrollRef.current.refresh()
   }
 
   // 选择首字母
   const handeleSelectAlpha = (value) => {
     if (alpha === value.key) return
     updateAlphaDispatch(value.key)
+    // 刷新并滚动到顶部
+    scrollRef.current.refresh()
   }
 
   // 上拉加载下一页
@@ -85,6 +90,7 @@ function Singers(props) {
       </NavContainer>
       <SingerContainer>
         <Scroll
+          ref={scrollRef}
           onScroll={forceCheck}
           pullUp={handlePullUp}
           pullDown={handlePullDown}
