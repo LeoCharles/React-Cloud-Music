@@ -1,9 +1,10 @@
-import React, { forwardRef, useState,useEffect, useRef, useImperativeHandle } from 'react'
+import React, { forwardRef, useState,useEffect, useRef, useImperativeHandle, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Loading from 'components/Loading'
 import LoadingV2 from 'components/LoadingV2'
 import { ScrollContainer } from './style'
 import BScroll from 'better-scroll'
+import { debounce } from '@/utils'
 
 // 使用 forwardRef 转发 ref，用于上层组件调用
 const Scroll = forwardRef((props, ref) => {
@@ -15,6 +16,16 @@ const Scroll = forwardRef((props, ref) => {
 
   // 生成 ref 对象，其 current 属性指向 BScroll 实例所作用的 DOM 元素
   const scrollContainerRef = useRef(null)
+
+  // 上拉回调加防抖
+  const pullUpDebounce = useMemo(() => {
+    return debounce(pullUp, 300)
+  }, [pullUp])
+
+  // 下拉回调加防抖
+  const pullDownDebounce = useMemo(() => {
+    return debounce(pullDown, 300)
+  }, [pullDown])
 
   // 创建 BScroll 实例
   useEffect(() => {
@@ -54,13 +65,13 @@ const Scroll = forwardRef((props, ref) => {
     bScroll.on('scrollEnd', () => {
       // 判断是否滚动到底部
       if(bScroll.y <= bScroll.maxScrollY){
-        pullUp()
+        pullUpDebounce()
       }
     })
     return () => {
       bScroll.off('scrollEnd')
     }
-  }, [bScroll, pullUp])
+  }, [bScroll, pullUp, pullUpDebounce])
 
   // 下拉到顶回调
   useEffect(() => {
@@ -69,13 +80,13 @@ const Scroll = forwardRef((props, ref) => {
     bScroll.on('touchEnd', (postion) => {
       // 到顶后下拉超过 50px 触发回调
       if (postion.y > 50) {
-        pullDown()
+        pullDownDebounce()
       }
     })
     return () => {
       bScroll.off('touchEnd')
     }
-  }, [bScroll, pullDown])
+  }, [bScroll, pullDown, pullDownDebounce])
 
   // 每次重新渲染时，刷新实例
   useEffect(() => {
