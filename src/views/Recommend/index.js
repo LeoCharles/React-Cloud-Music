@@ -29,7 +29,7 @@ function Recommend(props) {
 
   return (
     <Content>
-      <Loading loading={enterLoading}/>
+      <Loading show={enterLoading}/>
       <Scroll onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}/>

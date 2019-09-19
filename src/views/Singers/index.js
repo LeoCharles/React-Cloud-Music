@@ -67,7 +67,7 @@ function Singers(props) {
 
   return (
     <div>
-      <Loading loading={enterLoading}/>
+      <Loading show={enterLoading}/>
       <NavContainer>
         <HorizonList
           title="分类(默认热门):"

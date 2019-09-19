@@ -34,9 +34,9 @@ const LoadingWrapper = styled.div `
 `
 
 function Loading(props) {
-  const { loading } = props
+  const { show } = props
   return (
-    <LoadingWrapper  style={loading ? {display: 'block'} : {display: 'none'}}>
+    <LoadingWrapper  style={show ? {display: 'block'} : {display: 'none'}}>
       <div className="circle"></div>
       <div className="circle"></div>
     </LoadingWrapper>
@@ -44,11 +44,11 @@ function Loading(props) {
 }
 
 Loading.defaultProps = {
-  loaidng: false
+  show: false
 }
 
 Loading.propTypes = {
-  loaidng: PropTypes.bool
+  show: PropTypes.bool
 }
 
 export default React.memo(Loading)

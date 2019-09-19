@@ -49,9 +49,9 @@ const LoadingWrapper = styled.div `
 `
 
 function LoadingV2(props) {
-  const { loading } = props
+  const { show } = props
   return (
-    <LoadingWrapper  style={loading ? {display: 'block'} : {display: 'none'}}>
+    <LoadingWrapper  style={show ? {display: 'block'} : {display: 'none'}}>
       <span className="bar"></span>
       <span className="bar"></span>
       <span className="bar"></span>
@@ -63,11 +63,11 @@ function LoadingV2(props) {
 }
 
 LoadingV2.defaultProps = {
-  loaidng: false
+  show: false
 }
 
 LoadingV2.propTypes = {
-  loaidng: PropTypes.bool
+  show: PropTypes.bool
 }
 
 export default React.memo(LoadingV2)
