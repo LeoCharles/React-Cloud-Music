@@ -35,7 +35,6 @@ const LoadingWrapper = styled.div `
 
 function Loading(props) {
   const { loading } = props
-  console.log(loading)
   return (
     <LoadingWrapper  style={loading ? {display: 'block'} : {display: 'none'}}>
       <div className="circle"></div>

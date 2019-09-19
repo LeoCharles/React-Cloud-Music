@@ -1,6 +1,7 @@
 import React, { forwardRef, useState,useEffect, useRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 import Loading from 'components/Loading'
+import LoadingV2 from 'components/LoadingV2'
 import { ScrollContainer } from './style'
 import BScroll from 'better-scroll'
 
@@ -104,6 +105,7 @@ const Scroll = forwardRef((props, ref) => {
     <ScrollContainer ref={scrollContainerRef}>
       {props.children}
       <Loading loading={pullDownLoading}/>
+      <LoadingV2 loading={pullUpLoading}/>
     </ScrollContainer>
   )
 })
