@@ -4,6 +4,7 @@ import * as actionCreators from './store/actions'
 import Scroll from 'components/Scroll'
 import HorizonList from 'components/HorizonList'
 import Loading from 'components/Loading'
+import LazyLoad, { forceCheck } from 'react-lazyload'
 import { categoryTypes, alphaTypes } from '@/assets/config'
 import { NavContainer, SingerContainer, SingerList, SingerItem } from './style'
 
@@ -55,7 +56,9 @@ function Singers(props) {
           singerListJS.map((item, index) => (
             <SingerItem key={`${item.accountId}${index}`}>
               <div className="img-wrapper">
-                <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt={item.name} />
+                <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="singer" />}>
+                  <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt={item.name} />
+                </LazyLoad>
               </div>
               <span className="name">{item.name}</span>
             </SingerItem>
@@ -82,6 +85,7 @@ function Singers(props) {
       </NavContainer>
       <SingerContainer>
         <Scroll
+          onScroll={forceCheck}
           pullUp={handlePullUp}
           pullDown={handlePullDown}
           pullUpLoading={pullUpLoading}
