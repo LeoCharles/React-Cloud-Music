@@ -21,7 +21,7 @@ const LoadingWrapper = styled.div `
   margin: auto;
   text-align: center;
   z-index: 99;
-  font-size: 10px;
+  font-size: 12px;
   .txt {
     margin-left: 2px;
     color: ${global['theme-color']};

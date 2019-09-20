@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
+import { renderRoutes } from 'react-router-config'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import Slider from 'components/Silder'
-import RecommendList from 'components/RecommendList'
+import RecommendList from 'views/RecommendList'
 import Scroll from 'components/Scroll'
 import { forceCheck } from 'react-lazyload' // 检查是否进入可视区
 import { Content } from './style'
@@ -36,6 +37,7 @@ function Recommend(props) {
           <RecommendList recommendList={recommendListJS}/>
         </div>
       </Scroll>
+      { renderRoutes(props.route.routes) }
     </Content>
   )
 }
