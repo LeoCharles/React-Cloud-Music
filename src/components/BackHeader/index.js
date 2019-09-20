@@ -8,7 +8,7 @@ const HeaderContainer = styled.div `
   position: fixed;
   width: 100%;
   height: 40px;
-  padding: 5px 10px;
+  padding: 0 0 5px 10px;
   line-height: 40px;
   z-index: 100;
   color: ${global['font-color-light']};
@@ -25,24 +25,29 @@ const HeaderContainer = styled.div `
 
 // 使用 forwardRef 传入 ref
 const BackHeader = React.forwardRef((props, ref) => {
-  const { handleClick, title } = props
+  const { handleClick, title, isMarquee } = props
 
   return (
     <HeaderContainer ref={ref}>
       <i className="iconfont back" onClick={handleClick}>&#xe655;</i>
-      <h1 className="title">{title}</h1>
+      {
+        isMarquee ? <marquee><h1 className="title">{title}</h1></marquee> : <h1 className="title">{title}</h1>
+      }
+
     </HeaderContainer>
   )
 })
 
 BackHeader.defaultProps = {
   handleClick: () => {},
-  title: '标题'
+  title: '标题',
+  isMarquee: false
 }
 
 BackHeader.propTypes = {
   handleClick: PropTypes.func,
-  title: PropTypes.string
+  title: PropTypes.string,
+  isMarquee: PropTypes.bool
 }
 
 export default React.memo(BackHeader)

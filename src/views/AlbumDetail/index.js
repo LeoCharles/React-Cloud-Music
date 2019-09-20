@@ -1,5 +1,88 @@
 import React from 'react'
-import { TopDesc, Menu } from './style'
+import { TopDesc, Menu, SongListContainer, SongList } from './style'
+import { getName } from '@/utils'
+
+const currentAlbum = {
+  creator: {
+    avatarUrl: "http://p1.music.126.net/O9zV6jeawR43pfiK2JaVSw==/109951164232128905.jpg",
+    nickname: "浪里推舟"
+  },
+  coverImgUrl: "http://p2.music.126.net/ecpXnH13-0QWpWQmqlR0gw==/109951164354856816.jpg",
+  subscribedCount: 2010711,
+  name: "听完就睡，耳机是天黑以后柔软的梦境",
+  tracks:[
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+    {
+      name: "我真的受伤了",
+      ar: [{name: "张学友"}, {name: "周华健"}],
+      al: {
+        name: "学友 热"
+      }
+    },
+  ]
+}
 
 function AlbumDetail() {
 
@@ -38,9 +121,33 @@ function AlbumDetail() {
   )
 
   // 渲染歌曲列表
-  const renderSongList = () => {
-
-  }
+  const renderSongList = () => (
+    <SongListContainer>
+      <div className="first-line">
+        <div className="play-all">
+          <i className="iconfont">&#xe6e3;</i>
+          <span>播放全部<span className="sum"> (共46首) </span></span>
+        </div>
+        <div className="add-list">
+          <i className="iconfont">&#xe62d;</i>
+          <span>收藏(1.3万)</span>
+        </div>
+      </div>
+      <SongList>
+        {
+          currentAlbum.tracks.map((item, index) => (
+            <li className="item" key={index}>
+              <span className="index">{index + 1}</span>
+              <div className="info">
+                <span className="title">{item.name}</span>
+                <span className="name">{ getName(item.ar) } - {item.al.name}</span>
+              </div>
+            </li>
+          ))
+        }
+      </SongList>
+    </SongListContainer>
+  )
 
   return (
     <div>

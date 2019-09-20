@@ -207,3 +207,6 @@ export const rankTypes = {
   "32": "云音乐欧美新歌榜",
   "33": "说唱TOP榜",
 };
+
+// BackHeader 高度
+export const HEADER_HEIGHT = 45
