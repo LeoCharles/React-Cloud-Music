@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import Loading from 'components/Loading'
 import Scroll from 'components/Scroll'
-import { filterIndex } from '@/utils'
+import { filterIndex, filterRankIdx } from '@/utils'
 import { Container, RankList, ListItem, SongList } from './style'
 
 function Rank(props) {
@@ -18,6 +18,13 @@ function Rank(props) {
     }
     // eslint-disable-next-line
   }, [])
+
+  // 进入榜单详情
+  const enterDetail = (name) => {
+    const idx = filterRankIdx(name)
+    console.log(name, idx)
+    // 跳转到排行榜详情
+  }
 
   // 渲染官方榜中的歌曲列表
   const renderSongList = (list) => {
@@ -39,7 +46,8 @@ function Rank(props) {
         list.map(item => (
           <ListItem
             key={item.id}
-            tracks={item.tracks}>
+            tracks={item.tracks}
+            onClick={() => enterDetail(item.name)}>
             <div className="img-wrapper">
               <img src={item.coverImgUrl} alt={item.name}/>
               <div className="decorate"></div>

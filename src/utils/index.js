@@ -2,6 +2,8 @@
  * 工具函数
  */
 
+import { rankTypes } from '@/assets/config'
+
 // 防抖函数
 export const debounce = (fn, delay = 200) => {
   let timer = null
@@ -32,4 +34,12 @@ export const filterIndex = (list) => {
       return i + 1
     }
   }
+}
+
+// 根据榜单名称获取编号
+export const filterRankIdx = (name) => {
+  for (let key in rankTypes) {
+    if (rankTypes[key] === name) return key
+  }
+  return null;
 }
