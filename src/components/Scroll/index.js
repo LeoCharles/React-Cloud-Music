@@ -64,7 +64,7 @@ const Scroll = forwardRef((props, ref) => {
     // 绑定 滚动结束 事件
     bScroll.on('scrollEnd', () => {
       // 判断是否滚动到底部
-      if(bScroll.y <= bScroll.maxScrollY){
+      if(bScroll.y <= bScroll.maxScrollY + 100){
         pullUpDebounce()
       }
     })
