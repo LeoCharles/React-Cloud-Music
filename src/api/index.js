@@ -24,3 +24,8 @@ export const getArtistList = (category, alpha, count) => {
 export const getTopListDetail = () => {
   return request.get('/toplist/detail')
 }
+
+// 获取歌单详情
+export const getPlayListDetail = (id) => {
+  return request.get(`/playlist/detail?id=${id}`)
+}
