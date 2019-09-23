@@ -1,6 +1,6 @@
 import React from 'react'
 import { TopDesc, Menu, SongListContainer, SongList } from './style'
-import { getName } from '@/utils'
+import { getName, getCount } from '@/utils'
 
 function AlbumDetail(props) {
   const { currentAlbum } = props
@@ -45,11 +45,11 @@ function AlbumDetail(props) {
       <div className="first-line">
         <div className="play-all">
           <i className="iconfont">&#xe6e3;</i>
-          <span>播放全部<span className="sum"> (共46首) </span></span>
+          <span>播放全部<span className="sum"> (共{currentAlbum.tracks.length}首) </span></span>
         </div>
         <div className="add-list">
           <i className="iconfont">&#xe62d;</i>
-          <span>收藏(1.3万)</span>
+          <span>收藏{getCount(currentAlbum.subscribedCount)}</span>
         </div>
       </div>
       <SongList>

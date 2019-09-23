@@ -16,10 +16,8 @@ function Album(props) {
   const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
 
   const headerEl = useRef()
-  console.log(props);
   // 歌单 id
   const id = props.match.params.id
-  console.log(id);
 
   const { currentAlbum, enterLoading } = props
   const { getAlbumDetailDispatch } = props
