@@ -2,89 +2,8 @@ import React from 'react'
 import { TopDesc, Menu, SongListContainer, SongList } from './style'
 import { getName } from '@/utils'
 
-const currentAlbum = {
-  creator: {
-    avatarUrl: "http://p1.music.126.net/O9zV6jeawR43pfiK2JaVSw==/109951164232128905.jpg",
-    nickname: "浪里推舟"
-  },
-  coverImgUrl: "http://p2.music.126.net/ecpXnH13-0QWpWQmqlR0gw==/109951164354856816.jpg",
-  subscribedCount: 2010711,
-  name: "听完就睡，耳机是天黑以后柔软的梦境",
-  tracks:[
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-  ]
-}
-
-function AlbumDetail() {
+function AlbumDetail(props) {
+  const { currentAlbum } = props
 
   // 渲染歌单详情顶部介绍
   const renderToDesc = () => (
@@ -94,17 +13,17 @@ function AlbumDetail() {
       </div>
       <div className="img-wrapper">
         <div className="decorate"></div>
-        <img  src={'http://p1.music.126.net/rJ1k50EAvph5HLwIWHSz1g==/109951164226530974.jpg'} alt=""/>
+        <img  src={currentAlbum.coverImgUrl} alt=""/>
         <div className="play-count">
           <i className="iconfont play">&#xe885;</i>
-          <span className="count">13.6万</span>
+          <span className="count">{Math.floor(currentAlbum.subscribedCount / 1000) / 10}万</span>
         </div>
       </div>
       <div className="desc-wrapper">
-        <h1 className="title">{'午后时光 静享27°C阳光小调'}</h1>
+        <h1 className="title">{currentAlbum.name}</h1>
         <div className="person">
-          <div className="avatar"><img src={'http://p1.music.126.net/UQ7TVG036kyzZH3mLKgvYg==/109951163192255089.jpg'}  alt=""/></div>
-          <div className="name">{'周华健'}</div>
+          <div className="avatar"><img src={currentAlbum.creator.avatarUrl}  alt=""/></div>
+          <div className="name">{currentAlbum.creator.nickname}</div>
         </div>
       </div>
     </TopDesc>

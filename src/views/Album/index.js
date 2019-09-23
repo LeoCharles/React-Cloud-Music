@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from './store/actions'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
 import { CSSTransition } from 'react-transition-group' // 使用过渡动画
@@ -6,88 +8,7 @@ import { Container } from './style'
 import AlbumDetail from 'views/AlbumDetail'
 import { HEADER_HEIGHT } from '@/assets/config'
 import global from '@/assets/global-style'
-
-const currentAlbum = {
-  creator: {
-    avatarUrl: "http://p1.music.126.net/O9zV6jeawR43pfiK2JaVSw==/109951164232128905.jpg",
-    nickname: "浪里推舟"
-  },
-  coverImgUrl: "http://p2.music.126.net/ecpXnH13-0QWpWQmqlR0gw==/109951164354856816.jpg",
-  subscribedCount: 2010711,
-  name: "听完就睡，耳机是天黑以后柔软的梦境",
-  tracks:[
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-    {
-      name: "我真的受伤了",
-      ar: [{name: "张学友"}, {name: "周华健"}],
-      al: {
-        name: "学友 热"
-      }
-    },
-  ]
-}
+import { isEmptyObject } from '@/utils'
 
 function Album(props) {
   const [showStatus, setShowStatus] = useState(true)
@@ -95,6 +16,22 @@ function Album(props) {
   const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
 
   const headerEl = useRef()
+  console.log(props);
+  // 歌单 id
+  const id = props.match.params.id
+  console.log(id);
+
+  const { currentAlbum, enterLoading } = props
+  const { getAlbumDetailDispatch } = props
+  const currentAlbumJS = currentAlbum ? currentAlbum.toJS() : {}
+  console.log(currentAlbumJS, enterLoading);
+  // 获取歌单详情
+  useEffect(() => {
+    if (id) {
+      getAlbumDetailDispatch(id)
+    }
+
+  }, [getAlbumDetailDispatch, id])
 
   // 返回
   const handleBack = () => {
@@ -125,9 +62,6 @@ function Album(props) {
 
   }
 
-
-
-
   return (
     <CSSTransition
       in={showStatus}
@@ -142,16 +76,31 @@ function Album(props) {
           title={title}
           isMarquee={isMarquee}
           handleClick={handleBack} />
-        <Scroll
-          onScroll={handleScroll}
-          pullUp={handlePullUp}
-          pullUpLoading={false}
-          bounceTop={false}>
-          <AlbumDetail />
-        </Scroll>
+          {
+            !isEmptyObject(currentAlbumJS) ?
+            (<Scroll
+              onScroll={handleScroll}
+              pullUp={handlePullUp}
+              pullUpLoading={false}
+              bounceTop={false}>
+              <AlbumDetail currentAlbum={currentAlbumJS}/>
+            </Scroll>) : null
+          }
       </Container>
     </CSSTransition>
   )
 }
 
-export default Album
+const mapStateToProps = (state) => ({
+  currentAlbum: state.getIn(['album', 'currentAlbum']),
+  enterLoading: state.getIn(['album', 'enterLoading'])
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getAlbumDetailDispatch(id) {
+    dispatch(actionCreators.changeEnterLoading(true))
+    dispatch(actionCreators.getAlbumDetail(id))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Album))

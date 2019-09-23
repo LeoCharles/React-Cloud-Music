@@ -20,10 +20,8 @@ function Rank(props) {
   }, [])
 
   // 进入榜单详情
-  const enterDetail = (name) => {
-    const idx = filterRankIdx(name)
-    console.log(name, idx)
-    // 跳转到排行榜详情
+  const enterDetail = (item) => {
+    props.history.push(`/rank/${item.id}`)
   }
 
   // 渲染官方榜中的歌曲列表
@@ -47,7 +45,7 @@ function Rank(props) {
           <ListItem
             key={item.id}
             tracks={item.tracks}
-            onClick={() => enterDetail(item.name)}>
+            onClick={() => enterDetail(item)}>
             <div className="img-wrapper">
               <img src={item.coverImgUrl} alt={item.name}/>
               <div className="decorate"></div>

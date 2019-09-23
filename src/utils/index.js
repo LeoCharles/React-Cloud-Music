@@ -15,6 +15,9 @@ export const debounce = (fn, delay = 200) => {
   }
 }
 
+// 判断是否为空对象
+export const isEmptyObject = (obj) => !obj || Object.keys(obj).length === 0
+
 // 播放量格式化
 export const getCount = (count) => {
   if (count < 0) return

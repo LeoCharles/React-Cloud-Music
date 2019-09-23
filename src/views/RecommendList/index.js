@@ -15,14 +15,14 @@ function RecommendList(props) {
 
   return (
     <ListWrapper>
-      <h1 
+      <h1
         className="title"
         style={ recommendList.length ? {display: 'block'} : {display: 'none'}}>推荐歌单</h1>
       <List>
         {
           recommendList.map(item => {
             return (
-              <ListItem 
+              <ListItem
                 key={item.id}
                 onClick={() => enterDetail(item.id)}>
                 <div className="img-wrapper">

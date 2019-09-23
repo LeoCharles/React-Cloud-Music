@@ -21,6 +21,8 @@ export const getAlbumDetail = (id) => {
       }
     }).catch(err => {
       console.log(err)
+      dispatch(changeCurrentAlbum({}))
+      dispatch(changeEnterLoading(false))
     })
   }
 }
