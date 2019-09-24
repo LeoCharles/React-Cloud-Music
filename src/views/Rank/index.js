@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import Loading from 'components/Loading'
 import Scroll from 'components/Scroll'
-import { filterIndex, filterRankIdx } from '@/utils'
+import { filterIndex } from '@/utils'
 import { Container, RankList, ListItem, SongList } from './style'
 
 function Rank(props) {

@@ -49,7 +49,7 @@ function AlbumDetail(props) {
         </div>
         <div className="add-list">
           <i className="iconfont">&#xe62d;</i>
-          <span>收藏{getCount(currentAlbum.subscribedCount)}</span>
+          <span>收藏({getCount(currentAlbum.subscribedCount)})</span>
         </div>
       </div>
       <SongList>

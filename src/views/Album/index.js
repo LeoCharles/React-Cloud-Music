@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
+import Loading from 'components/Loading'
 import { CSSTransition } from 'react-transition-group' // 使用过渡动画
 import { Container } from './style'
 import AlbumDetail from 'views/AlbumDetail'
@@ -21,20 +22,18 @@ function Album(props) {
 
   const { currentAlbum, enterLoading } = props
   const { getAlbumDetailDispatch } = props
+
+  // 将 immutable 数据转换成 js 数据
   const currentAlbumJS = currentAlbum ? currentAlbum.toJS() : {}
-  console.log(currentAlbumJS, enterLoading);
+
   // 获取歌单详情
   useEffect(() => {
+    setShowStatus(true)
     if (id) {
       getAlbumDetailDispatch(id)
     }
 
   }, [getAlbumDetailDispatch, id])
-
-  // 返回
-  const handleBack = () => {
-    setShowStatus(false)
-  }
 
   // 滚动时显示走马灯效果
   const handleScroll = (pos) => {
@@ -45,7 +44,8 @@ function Album(props) {
     if (pos.y < minScrollY) {
       headerDOM.style.backgroundColor = global['theme-color']
       headerDOM.style.opacity = Math.min(1, (percent - 1) / 2)
-      setTitle(currentAlbum.name)
+      // 修改标题并开启走马灯
+      setTitle(currentAlbumJS && currentAlbumJS.name)
       setIsMarquee(true)
     } else {
       headerDOM.style.backgroundColor = ""
@@ -60,12 +60,18 @@ function Album(props) {
 
   }
 
+  // 返回
+  const handleBack = () => {
+    setShowStatus(false)
+  }
+
+  // 注意: CSSTransition 组件的类名要加 s
   return (
     <CSSTransition
       in={showStatus}
-      className="fly"
+      classNames="fly"
       timeout={300}
-      apper={true}
+      appear={true}
       unmountOnExit
       onExited={props.history.goBack}>
       <Container>
@@ -84,6 +90,7 @@ function Album(props) {
               <AlbumDetail currentAlbum={currentAlbumJS}/>
             </Scroll>) : null
           }
+          <Loading show={enterLoading} />
       </Container>
     </CSSTransition>
   )

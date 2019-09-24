@@ -22,7 +22,7 @@ export default [
         component: Recommend,
         routes: [
           {
-            patch: '/recommend/:id',
+            path: '/recommend/:id',
             component: Album
           }
         ]
