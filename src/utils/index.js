@@ -41,6 +41,7 @@ export const filterIndex = (list) => {
 
 // 根据榜单名称获取编号
 export const filterRankIdx = (name) => {
+  // eslint-disable-next-line no-unused-vars
   for (let key in rankTypes) {
     if (rankTypes[key] === name) return key
   }

@@ -7,7 +7,7 @@ function AlbumDetail(props) {
 
   // 渲染歌单详情顶部介绍
   const renderToDesc = () => (
-    <TopDesc>
+    <TopDesc background={currentAlbum.coverImgUrl}>
       <div className="background">
         <div className="filter"></div>
       </div>
@@ -58,8 +58,8 @@ function AlbumDetail(props) {
             <li className="item" key={index}>
               <span className="index">{index + 1}</span>
               <div className="info">
-                <span className="title">{item.name}</span>
-                <span className="name">{ getName(item.ar) } - {item.al.name}</span>
+                <span className="name">{item.name}</span>
+                <span className="singer">{ getName(item.ar) } - {item.al.name}</span>
               </div>
             </li>
           ))

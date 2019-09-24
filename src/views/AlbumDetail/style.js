@@ -17,7 +17,7 @@ export const TopDesc = styled.div `
     height: 100%;
     filter: blur(20px);
     z-index: -1;
-    background-image: url('http://p1.music.126.net/rJ1k50EAvph5HLwIWHSz1g==/109951164226530974.jpg');
+    background-image: url(${props => props.background});
     background-position: 0 0;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -160,10 +160,16 @@ export const SongListContainer = styled.div `
 `
 
 export const SongList = styled.ul `
+  padding: 0 5px 10px;
   .item {
     display: flex;
     height: 60px;
     align-items: center;
+    &:last-child{
+      .info {
+        border-bottom: none;
+      }
+    }
     .index {
       flex-basis: 60px;
       width: 60px;
@@ -180,14 +186,15 @@ export const SongList = styled.ul `
       height: 100%;
       padding: 5px 0;
       border-bottom: 1px solid ${global['border-color']};
-      ${global.noWrap()};
-      .title {
+      overflow: hidden;
+      .name {
         color: ${global['font-color-desc']};
         ${global.noWrap()};
       }
-      .name {
+      .singer {
         font-size: ${global['font-size-s']};
         color: ${global['font-color-desc-v2']};
+        ${global.noWrap()};
       }
     }
   }

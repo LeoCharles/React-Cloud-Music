@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import BackHeader from 'components/BackHeader'
@@ -17,9 +17,8 @@ function Album(props) {
   const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
 
   const headerEl = useRef()
-  // 歌单 id
-  const id = props.match.params.id
 
+  const id = props.match.params.id  // 歌单 id
   const { currentAlbum, enterLoading } = props
   const { getAlbumDetailDispatch } = props
 
@@ -28,15 +27,14 @@ function Album(props) {
 
   // 获取歌单详情
   useEffect(() => {
-    setShowStatus(true)
     if (id) {
       getAlbumDetailDispatch(id)
     }
 
   }, [getAlbumDetailDispatch, id])
 
-  // 滚动时显示走马灯效果
-  const handleScroll = (pos) => {
+  // 滚动时显示走马灯效果，传给子组件的回调用 useCallback 包裹，优化性能
+  const handleScroll = useCallback((pos) => {
     const minScrollY = -HEADER_HEIGHT
     const percent = Math.abs(pos.y / minScrollY)
     const headerDOM = headerEl.current
@@ -53,17 +51,17 @@ function Album(props) {
       setTitle('歌单')
       setIsMarquee(false)
     }
-  }
+  }, [currentAlbumJS])
 
   // 上拉
-  const handlePullUp = () => {
+  const handlePullUp = useCallback(() => {
 
-  }
+  }, [])
 
-  // 返回
-  const handleBack = () => {
+  // 
+  const handleBack = useCallback(() => {
     setShowStatus(false)
-  }
+  }, [])
 
   // 注意: CSSTransition 组件的类名要加 s
   return (

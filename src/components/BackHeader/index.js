@@ -17,7 +17,7 @@ const HeaderContainer = styled.div `
     width: 20px;
     font-size: 20px;
   }
-  .title {
+  .marquee {
     font-size: ${global['font-size-l']};
     font-weight: 700;
   }
@@ -31,7 +31,8 @@ const BackHeader = React.forwardRef((props, ref) => {
     <HeaderContainer ref={ref}>
       <i className="iconfont back" onClick={handleClick}>&#xe655;</i>
       {
-        isMarquee ? <marquee><h1 className="title">{title}</h1></marquee> : <h1 className="title">{title}</h1>
+        // eslint-disable-next-line jsx-a11y/no-distracting-elements
+        isMarquee ? <marquee><h1 className="marquee">{title}</h1></marquee> : <h1 className="marquee">{title}</h1>
       }
 
     </HeaderContainer>

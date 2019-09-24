@@ -4,6 +4,7 @@ import * as actionCreators from './store/actions'
 import Loading from 'components/Loading'
 import Scroll from 'components/Scroll'
 import { filterIndex } from '@/utils'
+import { renderRoutes } from 'react-router-config'
 import { Container, RankList, ListItem, SongList } from './style'
 
 function Rank(props) {
@@ -75,6 +76,7 @@ function Rank(props) {
           <Loading show={loading} />
         </div>
       </Scroll>
+      { renderRoutes(props.route.routes) }
     </Container>
   )
 }
