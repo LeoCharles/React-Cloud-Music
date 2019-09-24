@@ -7,6 +7,7 @@ import Loading from 'components/Loading'
 import LazyLoad, { forceCheck } from 'react-lazyload'
 import { categoryTypes, alphaTypes } from '@/assets/config'
 import { NavContainer, SingerContainer, SingerList, SingerItem } from './style'
+import { renderRoutes } from 'react-router-config'
 
 function Singers(props) {
   const scrollRef = useRef(null) // 传入 ref 用于调用 scroll 组件的方法
@@ -22,6 +23,13 @@ function Singers(props) {
     }
     // eslint-disable-next-line
   }, [])
+
+  // 歌手详情
+  const enterDetail = (id) => {
+    if (id) {
+      props.history.push(`/singers/${id}`)
+    }
+  }
 
   // 选择歌手分类
   const handeleSelectCategory = (value) => {
@@ -59,7 +67,9 @@ function Singers(props) {
       <SingerList>
         {
           singerListJS.map((item, index) => (
-            <SingerItem key={`${item.accountId}${index}`}>
+            <SingerItem 
+              key={`${item.accountId}${index}`}
+              onClick={() => enterDetail(item.id)}>
               <div className="img-wrapper">
                 <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="singer" />}>
                   <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt={item.name} />
@@ -99,6 +109,7 @@ function Singers(props) {
           { renderSingerList() }
         </Scroll>
       </SingerContainer>
+      { renderRoutes(props.route.routes) }
     </div>
   )
 }
