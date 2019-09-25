@@ -17,7 +17,7 @@ const SongList = React.forwardRef((props, refs) => {
 
   const renderList = (list) => {
     return list.map((item, index) => (
-      <li 
+      <li
         className="item"
         key={index}
         onClick={(item) => selectItem(item, index)}>
@@ -40,7 +40,9 @@ const SongList = React.forwardRef((props, refs) => {
   )
 
   return (
-    <ListContainer>
+    <ListContainer
+      ref={refs}
+      showBackground={props.showBackground}>
       <div className="first-line">
         <div className="play-all">
           <i className="iconfont">&#xe6e3;</i>
