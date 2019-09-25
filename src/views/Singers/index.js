@@ -67,7 +67,7 @@ function Singers(props) {
       <SingerList>
         {
           singerListJS.map((item, index) => (
-            <SingerItem 
+            <SingerItem
               key={`${item.accountId}${index}`}
               onClick={() => enterDetail(item.id)}>
               <div className="img-wrapper">
@@ -147,7 +147,7 @@ const mapDispatchToProps = (dispatch) => ({
   // 底部上拉加载更多
   pullUpDispatch(isHot, nextPage) {
     dispatch(actionCreators.changePullUpLoading(true)) // 加载更多 loading
-    dispatch(actionCreators.changePageCount(nextPage)) // 加载下一页 
+    dispatch(actionCreators.changePageCount(nextPage)) // 加载下一页
     if (isHot) {
       dispatch(actionCreators.getHotSingerList())
     } else {

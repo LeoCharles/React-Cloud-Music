@@ -29,3 +29,8 @@ export const getTopListDetail = () => {
 export const getPlayListDetail = (id) => {
   return request.get(`/playlist/detail?id=${id}`)
 }
+
+// 获取歌手详情
+export const getArtistsDetail = (id) => {
+  return request.get(`/artists?id=${id}`)
+}

@@ -1,127 +1,26 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from './store/actions'
 import { CSSTransition } from 'react-transition-group'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
+import Loading from 'components/Loading'
 import SongList from 'views/SongList'
 import { Container, ImgWrapper, CollectBtn, SongListWrapper, BgLayer } from './style'
 import { HEADER_HEIGHT } from '@/assets/config'
 
-const artist = {
-  picUrl: "https://p2.music.126.net/W__FCWFiyq0JdPtuLJoZVQ==/109951163765026271.jpg",
-  name: "薛之谦",
-  hotSongs: [
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },{
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-    {
-      name: "我好像在哪见过你",
-      ar: [{name: "薛之谦"}],
-      al: {
-        name: "薛之谦专辑"
-      }
-    },
-  ]
-}
-
 function SingerDetail(props) {
+
+  const { artist, songs, loading } = props
+  const { getSingerDetailDispatch } = props
+
+  // 将 immutable 数据结构 转换成 JS 数据结构
+  const artistJS = artist ? artist.toJS() : {}
+  const songList = songs ? songs.toJS() : []
+
+
   const [showStatus, setShowStatus] = useState(true)
-  
+
   const initialHeight = useRef(0) // 图片初始高度
   const imageWrapperRef = useRef()
   const collectBtnRef = useRef()
@@ -131,6 +30,14 @@ function SingerDetail(props) {
 
   const OFFSET = 5 // 向上偏移量，压住图片，露出歌曲列表圆角
 
+  // 获取歌手详情
+  useEffect(() => {
+    const id = props.match.params.id
+    getSingerDetailDispatch(id)
+    // eslint-disable-next-line
+  }, [])
+
+  // 滚动动效
   useEffect(() => {
     const h = imageWrapperRef.current.offsetHeight
     initialHeight.current = h
@@ -146,6 +53,7 @@ function SingerDetail(props) {
     setShowStatus(false)
   }, [])
 
+  // 滚动时动画效果
   const handleScroll = useCallback((pos) => {
     const newY = pos.y                     // 当前位置的 Y 坐标
     const height = initialHeight.current   // 图片高度
@@ -191,11 +99,11 @@ function SingerDetail(props) {
       onExited={props.history.goBack}>
       <Container>
         <BackHeader
-          title={artist.name}
+          title={artistJS.name}
           handleClick={handleBack}/>
         <ImgWrapper
           ref={imageWrapperRef}
-          bgUrl={artist.picUrl}>
+          bgUrl={artistJS.picUrl}>
           <div className="filter"></div>
         </ImgWrapper>
         <CollectBtn ref={collectBtnRef}>
@@ -203,15 +111,29 @@ function SingerDetail(props) {
         </CollectBtn>
         <BgLayer ref={bgLayerRef}></BgLayer>
         <SongListWrapper ref={songScrollWrapperRef}>
-          <Scroll 
+          <Scroll
             ref={songScrollRef}
             onScroll={handleScroll}>
-            <SongList songList={artist.hotSongs} showCollect={false}/>
+            <SongList songList={songList} showCollect={false}/>
           </Scroll>
         </SongListWrapper>
+        <Loading show={loading}/>
       </Container>
     </CSSTransition>
   )
 }
 
-export default SingerDetail
+const mapStateToProps = (state) => ({
+  artist: state.getIn(['singerDetail', 'artist']),
+  songs: state.getIn(['singerDetail', 'songsOfArtist']),
+  loading: state.getIn(['singerDetail', 'loading'])
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getSingerDetailDispatch(id) {
+    dispatch(actionCreators.changeEnterLoading(true))
+    dispatch(actionCreators.getSingerDetail(id))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(SingerDetail))

@@ -1,7 +1,6 @@
 import React from 'react'
-import { TopDesc, Menu, SongListContainer, SongList } from './style'
-import { getName, getCount } from '@/utils'
-// import SongList from 'views/SongList'
+import { TopDesc, Menu } from './style'
+import SongList from 'views/SongList'
 
 function AlbumDetail(props) {
   const { currentAlbum } = props
@@ -42,32 +41,10 @@ function AlbumDetail(props) {
 
   // 渲染歌曲列表
   const renderSongList = () => (
-    // <SongList songlist={currentAlbum.tracks} />
-    <SongListContainer>
-      <div className="first-line">
-        <div className="play-all">
-          <i className="iconfont">&#xe6e3;</i>
-          <span>播放全部<span className="sum"> (共{currentAlbum.tracks.length}首) </span></span>
-        </div>
-        <div className="add-list">
-          <i className="iconfont">&#xe62d;</i>
-          <span>收藏({getCount(currentAlbum.subscribedCount)})</span>
-        </div>
-      </div>
-      <SongList>
-        {
-          currentAlbum.tracks.map((item, index) => (
-            <li className="item" key={index}>
-              <span className="index">{index + 1}</span>
-              <div className="info">
-                <span className="name">{item.name}</span>
-                <span className="singer">{ getName(item.ar) } - {item.al.name}</span>
-              </div>
-            </li>
-          ))
-        }
-      </SongList>
-    </SongListContainer>
+    <SongList
+      songList={currentAlbum.tracks}
+      showCollect={true}
+      collection={currentAlbum.subscribedCount}/>
   )
 
   return (
