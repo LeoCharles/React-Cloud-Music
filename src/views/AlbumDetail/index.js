@@ -1,6 +1,7 @@
 import React from 'react'
 import { TopDesc, Menu, SongListContainer, SongList } from './style'
 import { getName, getCount } from '@/utils'
+// import SongList from 'views/SongList'
 
 function AlbumDetail(props) {
   const { currentAlbum } = props
@@ -41,6 +42,7 @@ function AlbumDetail(props) {
 
   // 渲染歌曲列表
   const renderSongList = () => (
+    // <SongList songlist={currentAlbum.tracks} />
     <SongListContainer>
       <div className="first-line">
         <div className="play-all">

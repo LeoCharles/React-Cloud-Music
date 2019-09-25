@@ -210,3 +210,6 @@ export const rankTypes = {
 
 // BackHeader 高度
 export const HEADER_HEIGHT = 45
+
+// 歌曲列表一页限定歌曲数量
+export const PAGE_COUNT = 50
