@@ -15,6 +15,7 @@ const SongList = React.forwardRef((props, refs) => {
 
   }
 
+  // 渲染歌曲列表
   const renderList = (list) => {
     return list.map((item, index) => (
       <li
@@ -32,6 +33,7 @@ const SongList = React.forwardRef((props, refs) => {
     ))
   }
 
+  // 渲染收藏按钮
   const renderCollect = (count) => (
     <div className="add-list">
       <i className="iconfont">&#xe62d;</i>
