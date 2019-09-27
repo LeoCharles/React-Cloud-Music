@@ -1,0 +1,8 @@
+export const CHANGE_PLAY_LIST = 'player/change_play_list'
+export const CHANGE_SEQUENCE_LIST = 'player/change_sequence_list'
+export const CHANGE_CURRENT_SONG = 'player/change_current_song'
+export const CHANGE_CURRENT_INDEX = 'player/change_current_index'
+export const CHANGE_PLAY_MODE = 'player/change_play_mode'
+export const CHANGE_PLAYING_STATE = 'player/change_playing_state'
+export const CHANGE_FULL_SCREEN = 'player/change_full_screen'
+export const CHANGE_SHOW_PLAYLIST = 'player/change_show_playlist'

@@ -2,6 +2,7 @@ import React from 'react'
 import { renderRoutes } from 'react-router-config'
 import { NavLink } from 'react-router-dom'
 import { Top, Tab, TabItem } from './style'
+import Player from 'views/Player'
 
 function Home(props) {
   const { route } = props
@@ -24,6 +25,7 @@ function Home(props) {
         </TabItem>
       </Tab>
       {renderRoutes(route.routes)}
+      <Player />
     </div>
   )
 }

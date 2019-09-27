@@ -213,3 +213,10 @@ export const HEADER_HEIGHT = 45
 
 // 歌曲列表一页限定歌曲数量
 export const PAGE_COUNT = 50
+
+// 播放模式
+export const playMode = {
+  sequence: 0,  // 顺序
+  loop: 1,      // 循环
+  random: 2     // 随机
+}

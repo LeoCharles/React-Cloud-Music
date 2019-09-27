@@ -4,6 +4,7 @@ import { reducer as singersReducer } from 'views/Singers/store'
 import { reducer as singerDetailReducer } from 'views/SingerDetail/store'
 import { reducer as rankReducer } from 'views/Rank/store'
 import { reducer as albumReducer } from 'views/Album/store'
+import { reducer as playerReducer } from 'views/Player/store'
 
 export default combineReducers({
   recommend: recommendReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   singerDetail: singerDetailReducer,
   rank: rankReducer,
   album: albumReducer,
+  player: playerReducer,
 })
