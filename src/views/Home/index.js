@@ -7,7 +7,7 @@ import Player from 'views/Player'
 function Home(props) {
   const { route } = props
   return (
-    <div>
+    <div style={{backgroundColor: '#d44439'}}>
       <Top>
         <span className="iconfont menu">&#xe65c;</span>
         <span className="title">云音悦</span>

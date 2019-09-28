@@ -13,8 +13,10 @@ export const ListContainer = styled.div `
     margin-left: 10px;
     border-bottom: 1px solid ${global['border-color']};
     .play-all {
+      display: flex;
       line-height: 24px;
       color: ${global['font-color-desc']};
+      align-items: center;
       .iconfont {
         font-size: 24px;
         margin-right: 10px;

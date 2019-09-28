@@ -45,7 +45,7 @@ export default {
   'font-color-gray': '#808080',
   'font-color-light': '#f1f1f1',
   'font-color-desc': '#2E3030',
-  'font-color-desc-v2': '#888',
+  'font-color-desc-v2': '#bba8a8',
   'font-color-desc-v3': 'hsla(0,0%,100%,.6)',
   'font-size-ss': '10px',
   'font-size-s': '12px',

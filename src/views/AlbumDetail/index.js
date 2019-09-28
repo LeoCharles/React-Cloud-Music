@@ -43,7 +43,7 @@ function AlbumDetail(props) {
   const renderSongList = () => (
     <SongList
       songList={currentAlbum.tracks}
-      collection={currentAlbum.subscribedCount}
+      collectCount={currentAlbum.subscribedCount}
       showCollect={true}
       showBackground={true}/>
   )

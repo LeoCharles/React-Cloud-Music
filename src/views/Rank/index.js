@@ -69,9 +69,9 @@ function Rank(props) {
     <Container>
       <Scroll>
         <div>
-          <h1 className="title" style={displayStyle}>官方榜</h1>
+          <h1 className="offical" style={displayStyle}>官方榜</h1>
           { renderRankList(officialList) }
-          <h1 className="title" style={displayStyle}>全球榜</h1>
+          <h1 className="global" style={displayStyle}>全球榜</h1>
           { renderRankList(globalList, true) }
           <Loading show={loading} />
         </div>

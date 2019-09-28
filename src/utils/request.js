@@ -3,7 +3,7 @@ import axios from 'axios'
 let baseURL = ''
 if (process.env.NODE_ENV !== 'production') {
   // 开发环境
-  baseURL = 'http://192.168.3.174:3300'
+  baseURL = 'http://192.168.31.166:3300'
 } else {
   // 生产环境
   baseURL = 'http://47.105.150.105/m-api'

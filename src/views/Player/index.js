@@ -1,11 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
+import MiniPlayer from './MiniPlayer'
+import NormalPlayer from './NormalPlayer'
 
-function Player() {
+function Player(props) {
+
+  const currentSong = {
+    al: { picUrl: "http://p2.music.126.net/aobhntWi-ixT_wsXuIY3fQ==/3293037326190458.jpg" },
+    name: "木偶人",
+    ar: [{name: "薛之谦"}]
+  }
+
   return (
     <div>
-      Player
+      {/* <MiniPlayer song={currentSong}/> */}
+      <NormalPlayer song={currentSong}/>
     </div>
   )
 }

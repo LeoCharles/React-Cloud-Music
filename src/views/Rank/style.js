@@ -4,10 +4,10 @@ import global from '@/assets/global-style'
 // Scroll 的容器要确定高度
 export const Container = styled.div `
   position: fixed;
-  top: 90px;
+  top: 95px;
   bottom: 0;
   width: 100%;
-  .title {
+  .offical, .global {
     margin-top: 10px;
     padding: 10px 5px;
     font-weight: 700;

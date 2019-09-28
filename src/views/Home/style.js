@@ -21,7 +21,7 @@ export const Top = styled.div `
 export const Tab = styled.ul `
   display: flex;
   justify-content: space-around;
-  height: 40px;
+  height: 45px;
   background-color: ${global['theme-color']};
   li {
     flex: 1;
@@ -30,7 +30,7 @@ export const Tab = styled.ul `
       color: #e4e4e4;
       &.active {
         span {
-          padding: 3px 0;
+          padding: 2px 0;
           font-weight: 700;
           color: ${global['font-color-light']};
           border-bottom: 2px solid #f1f1f1;
