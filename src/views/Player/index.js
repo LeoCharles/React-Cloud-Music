@@ -12,10 +12,20 @@ function Player(props) {
     ar: [{name: "薛之谦"}]
   }
 
+  const { fullScreen } = props
+
+  const { toggleFullScreenDispatch } = props
+
   return (
     <div>
-      {/* <MiniPlayer song={currentSong}/> */}
-      <NormalPlayer song={currentSong}/>
+      <MiniPlayer 
+        song={currentSong}
+        fullScreen={fullScreen}
+        toggleFullScreen={toggleFullScreenDispatch}/>
+      <NormalPlayer 
+        song={currentSong}
+        fullScreen={fullScreen}
+        toggleFullScreen={toggleFullScreenDispatch}/>
     </div>
   )
 }

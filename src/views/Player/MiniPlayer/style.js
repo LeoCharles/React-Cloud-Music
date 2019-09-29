@@ -20,7 +20,18 @@ export const MiniPlayerContainer = styled.div`
   align-items: center;
   z-index: 999;
   background-color: ${global['background-color-light']};
-  .img-wrapper {
+  &.mini-enter {
+    transform: translateY(100%);
+  }
+  &.mini-enter-active {
+    transform: translateY(0);
+    transition: all 0.4s;
+  }
+  &.mini-exit-active {
+    transform: translateY(100%);
+    transition: all 0.4s;
+  }
+  .mini-cd {
     width: 40px;
     height: 40px;
     padding: 0 10px 0 20px;

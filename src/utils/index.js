@@ -57,3 +57,29 @@ export const getName = (list) => {
   })
   return str
 }
+
+// 使用 transform 属性判断浏览器厂商
+const getVendor = () => {
+  const elStyle = document.createElement('div').style
+  const transformNames = {
+    webkit: 'webkitTransform',
+    moz: 'mozTransform',
+    o: 'oTransform',
+    ms: 'msTransform',
+    standard: 'transform'
+  }
+  for (var key in transformNames) {
+    if(elStyle[transformNames[key]] !== undefined ) {
+      return key
+    } 
+  }
+  return false
+}
+
+// 给样式加浏览器厂商前缀
+export const prefixStyle = (style) => {
+  const vendor = getVendor()
+  if (!vendor) return false
+  if (vendor === 'standard') return style
+  return vendor + style.charAt(0).toUpperCase() + style.substr(1)
+}

@@ -15,6 +15,25 @@ export const NormalPlayerContainer = styled.div`
   left: 0; right: 0; top: 0; bottom: 0;
   z-index: 150;
   background-color: ${global['background-color']};
+  &.normal-enter, &.normal-exit-done {
+    .header {
+      transform: translateY(-100px);
+    }
+    .footer {
+      transform: translateY(100px);
+    }
+  }
+  &.normal-enter-active, &.normal-exit-active {
+    opacity: 1;
+    transition: all 0.4s;
+    .header, .footer {
+      transform: translateY(0);
+      transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+    }
+  }
+  &.normal-exit-active {
+    opacity: 0;
+  }
   .background {
     position: absolute;
     top: 0; left: 0;
@@ -78,7 +97,7 @@ export const Body = styled.div `
 export const CDWrapper = styled.div `
   box-sizing: border-box;
   position: absolute;
-  top: 10%; left: 0; right: 0;
+  top: 40px; left: 0; right: 0;
   width: 80vw;
   height: 80vw;
   margin: auto;
