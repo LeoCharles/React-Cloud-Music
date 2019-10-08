@@ -1,8 +1,9 @@
 import React, {useRef} from 'react'
 import { CSSTransition } from 'react-transition-group'
-import { NormalPlayerContainer, Header, Body, CDWrapper, Footer } from './style'
+import { NormalPlayerContainer, Header, Body, CDWrapper, Footer, ProgressWrapper } from './style'
 import { getName, prefixStyle } from '@/utils'
 import animations from 'create-keyframe-animation'
+import ProgressBar from 'components/ProgressBar'
 
 function NormalPlayer(props) {
   const { song, fullScreen } = props
@@ -108,6 +109,13 @@ function NormalPlayer(props) {
           </CDWrapper>
         </Body>
         <Footer className="footer">
+          <ProgressWrapper>
+            <span className="time time-l">0:00</span>
+            <div className="progress-bar-wrapper">
+              <ProgressBar percent={0.2} percentChange={(percent) => console.log(percent)}/>
+            </div>
+            <span className="time time-r">6:15</span>
+          </ProgressWrapper>
           <div className="operators">
             <div className="icon"><i className="iconfont">&#xe625;</i></div>
             <div className="icon"><i className="iconfont">&#xe6e1;</i></div>
