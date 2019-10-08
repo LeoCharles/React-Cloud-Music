@@ -3,29 +3,78 @@ import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
+import { getSongUrl, isEmptyObject } from '@/utils'
 
 function Player(props) {
 
-  const currentSong = {
-    al: { picUrl: "http://p2.music.126.net/aobhntWi-ixT_wsXuIY3fQ==/3293037326190458.jpg" },
-    name: "木偶人",
-    ar: [{name: "薛之谦"}]
+  const [currentTime, setCurrentTime] = useState(0)// 当前播放时长
+  const [duration, setDuration] = useState(0) // 歌曲总时长
+  const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
+
+  const {
+    fullScreen,
+    playing,
+    currentIndex,
+    currentSong: immutableCurrentSong,
+    playList: immutablePlayList,
+  } = props
+
+  const {
+    toggleFullScreenDispatch,
+    togglePlayingDispatch,
+    changeCurrentIndexDispatch,
+    changeCurrentSongDispatch
+  } = props
+
+  const currentSong = immutableCurrentSong.toJS()
+  const playList = immutablePlayList.toJS()
+
+  const audioRef = useRef()
+
+  useEffect(() => {
+    if(isEmptyObject(currentSong)) return
+    changeCurrentIndexDispatch(0)
+    const current = playList[0]
+    changeCurrentSongDispatch(current)
+    audioRef.current.src = getSongUrl(current.id)
+    setTimeout(() => {
+      audioRef.current.play()
+    })
+    togglePlayingDispatch(true)
+    setCurrentTime(0)
+    setDuration((current.dt / 1000) | 0)
+    // eslint-disable-next-line
+  }, [])
+
+  // 播放和暂停
+  useEffect(() => {
+    playing ? audioRef.current.play() : audioRef.current.pause()
+  }, [playing])
+
+  const togglePlaying = (e, state) => {
+    e.stopPropagation();
+    togglePlayingDispatch(state)
   }
-
-  const { fullScreen } = props
-
-  const { toggleFullScreenDispatch } = props
 
   return (
     <div>
-      <MiniPlayer 
-        song={currentSong}
-        fullScreen={fullScreen}
-        toggleFullScreen={toggleFullScreenDispatch}/>
-      <NormalPlayer 
-        song={currentSong}
-        fullScreen={fullScreen}
-        toggleFullScreen={toggleFullScreenDispatch}/>
+      { isEmptyObject(currentSong) ? null :
+        <MiniPlayer 
+          song={currentSong}
+          playing={playing}
+          fullScreen={fullScreen}
+          toggleFullScreen={toggleFullScreenDispatch}
+          togglePlaying={togglePlaying}/>
+      }
+      { isEmptyObject(currentSong) ? null :
+        <NormalPlayer 
+          song={currentSong}
+          playing={playing}
+          fullScreen={fullScreen}
+          toggleFullScreen={toggleFullScreenDispatch}
+          togglePlaying={togglePlaying}/>
+      }
+      <audio ref={audioRef}></audio>
     </div>
   )
 }

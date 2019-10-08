@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { connect } from 'react-redux'
 import { ListContainer, List} from './style'
 import { getName, getCount } from '@/utils'
 import { PAGE_COUNT } from '@/assets/config'
@@ -11,8 +12,8 @@ const SongList = React.forwardRef((props, refs) => {
 
   const totalCount = songList.length
 
-  const selectItem = (item, index) => {
-
+  const selectItem = (e, index) => {
+    
   }
 
   // 渲染歌曲列表
@@ -21,7 +22,7 @@ const SongList = React.forwardRef((props, refs) => {
       <li
         className="item"
         key={index}
-        onClick={(item) => selectItem(item, index)}>
+        onClick={(e) => selectItem(e, index)}>
         <span className="index">{index + 1}</span>
         <div className="info">
           <span className="name">{item.name}</span>
@@ -59,4 +60,12 @@ const SongList = React.forwardRef((props, refs) => {
   )
 })
 
-export default React.memo(SongList)
+const mapStateToProps = (state) => ({
+  
+})
+
+const mapDospatchToProps = (dispatch) => ({
+
+})
+
+export default connect(mapStateToProps, mapDospatchToProps)(React.memo(SongList))

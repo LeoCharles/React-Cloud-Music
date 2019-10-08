@@ -58,6 +58,11 @@ export const getName = (list) => {
   return str
 }
 
+// 拼接歌曲的 URL 
+export const getSongUrl = id => {
+  return `https: //music.163.com/song/meida/outer/url?id=${id}.mp3`
+}
+
 // 使用 transform 属性判断浏览器厂商
 const getVendor = () => {
   const elStyle = document.createElement('div').style
