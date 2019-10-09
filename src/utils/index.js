@@ -60,7 +60,15 @@ export const getName = (list) => {
 
 // 拼接歌曲的 URL 
 export const getSongUrl = id => {
-  return `https: //music.163.com/song/meida/outer/url?id=${id}.mp3`
+  return `https://music.163.com/song/meida/outer/url?id=${id}.mp3`
+}
+
+// 格式化时间
+export const formatePlayTime = (interval) => {
+  interval = interval | 0
+  const minute = (interval / 60) | 0
+  const second = (interval % 60).toString().padStart(2, '0') // 字符串补全两位
+  return `${minute}:${second}`
 }
 
 // 使用 transform 属性判断浏览器厂商

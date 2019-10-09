@@ -46,6 +46,18 @@ function ProgressBar(props) {
 
   const { percent, percentChange } = props
 
+  const transform = prefixStyle('transform')
+
+  // 监听 percent
+  useEffect(() => {
+    if(percent >= 0 && percent <= 1 && !touch.initiated) {
+      const barWidth = progressBarRef.current.clientWidth - progressBtnWidth // 进度条总长
+      const offsetWidth = percent * barWidth
+      progressRef.current.style.width = `${offsetWidth}px`
+      progressBtnRef.current.style[transform] = `translateX(${offsetWidth}px)`
+    }
+    // eslint-disable-next-line
+  }, [percent])
 
   // 修改已完成进度条的长度和按钮的 X 轴坐标
   const _progressOffset = (offsetWidth) => {

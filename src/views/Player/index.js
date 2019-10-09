@@ -11,6 +11,10 @@ function Player(props) {
   const [duration, setDuration] = useState(0) // 歌曲总时长
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
+  const [songReady, setSongReady] = useState(true)
+  
+  const audioRef = useRef()
+
   const {
     fullScreen,
     playing,
@@ -26,34 +30,64 @@ function Player(props) {
     changeCurrentSongDispatch
   } = props
 
-  const currentSong = immutableCurrentSong.toJS()
   const playList = immutablePlayList.toJS()
-
-  const audioRef = useRef()
+  const currentSong = immutableCurrentSong.toJS()
 
   useEffect(() => {
-    if(isEmptyObject(currentSong)) return
-    changeCurrentIndexDispatch(0)
-    const current = playList[0]
+    if (
+      !playList.length || 
+      currentIndex === -1 || 
+      !playList[currentIndex] ||
+      !songReady
+    ) return
+
+    // 当前播放歌曲
+    const current = playList[currentIndex]
+    setSongReady(false)
     changeCurrentSongDispatch(current)
+
+    // 获取 MP3 地址
     audioRef.current.src = getSongUrl(current.id)
+
     setTimeout(() => {
-      audioRef.current.play()
+      audioRef.current.play().then(() => {
+        setSongReady(true)
+      })
     })
+
+    // 播放状态
     togglePlayingDispatch(true)
+    // 从头开始播放
     setCurrentTime(0)
+    // 歌曲总时长
     setDuration((current.dt / 1000) | 0)
     // eslint-disable-next-line
-  }, [])
+  }, [playList, currentIndex])
 
   // 播放和暂停
   useEffect(() => {
     playing ? audioRef.current.play() : audioRef.current.pause()
   }, [playing])
 
+  // 切换播放和暂停
   const togglePlaying = (e, state) => {
     e.stopPropagation();
     togglePlayingDispatch(state)
+  }
+
+  // 时间更新
+  const updateTime = (e) => {
+    setCurrentTime(e.target.currentTime)
+  }
+
+  // 进度条百分比改变的回调
+  const handleProgressChange = (currPercent) => {
+    const newTime = currPercent * duration
+    setCurrentTime(newTime)
+    audioRef.current.currentTime = newTime
+    if(!playing) {
+      togglePlayingDispatch(true)
+    }
   }
 
   return (
@@ -62,6 +96,7 @@ function Player(props) {
         <MiniPlayer 
           song={currentSong}
           playing={playing}
+          percent={percent}
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}/>
@@ -70,11 +105,18 @@ function Player(props) {
         <NormalPlayer 
           song={currentSong}
           playing={playing}
+          duration={duration}
+          currentTime={currentTime}
+          percent={percent}
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
-          togglePlaying={togglePlaying}/>
+          togglePlaying={togglePlaying}
+          onProgressChange={handleProgressChange}/>
       }
-      <audio ref={audioRef}></audio>
+      <audio 
+        ref={audioRef}
+        onTimeUpdate={updateTime}
+      ></audio>
     </div>
   )
 }

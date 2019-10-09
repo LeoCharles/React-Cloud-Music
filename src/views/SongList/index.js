@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { ListContainer, List} from './style'
 import { getName, getCount } from '@/utils'
-import { PAGE_COUNT } from '@/assets/config'
+import { changePlayList, changeCurrentIndex, changeSequenceList } from 'views/Player/store/actions'
 
 const SongList = React.forwardRef((props, refs) => {
 
-  const [pageIndex, setPageIndex] = useState(0)
-
   const { collectCount, showCollect, songList } = props
+  const { changePlayListDispatch, changeCurrentIndexDispatch, changeSequenceListDispatch} = props
 
   const totalCount = songList.length
 
   const selectItem = (e, index) => {
-    
+    changePlayListDispatch(songList)
+    changeSequenceListDispatch(songList)
+    changeCurrentIndexDispatch(index)
   }
 
   // 渲染歌曲列表
@@ -60,12 +61,16 @@ const SongList = React.forwardRef((props, refs) => {
   )
 })
 
-const mapStateToProps = (state) => ({
-  
-})
-
 const mapDospatchToProps = (dispatch) => ({
-
+  changePlayListDispatch(data) {
+    dispatch(changePlayList(data))
+  },
+  changeCurrentIndexDispatch(index) {
+    dispatch(changeCurrentIndex(index))
+  },
+  changeSequenceListDispatch(data) {
+    dispatch(changeSequenceList(data))
+  }
 })
 
-export default connect(mapStateToProps, mapDospatchToProps)(React.memo(SongList))
+export default connect(null, mapDospatchToProps)(React.memo(SongList))

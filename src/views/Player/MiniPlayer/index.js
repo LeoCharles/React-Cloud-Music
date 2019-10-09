@@ -10,7 +10,6 @@ function MiniPlayer(props) {
   const { toggleFullScreen, togglePlaying } = props
 
   const miniPlayerRef = useRef()
-
   return (
     <CSSTransition
       classNames="mini"
@@ -22,7 +21,7 @@ function MiniPlayer(props) {
         ref={miniPlayerRef}
         onClick={() => toggleFullScreen(true)}>
         <div className="mini-cd">
-          <img className={`img ${playing ? 'play' : 'pause'}`} src={song.al.picUrl} alt="player"/>
+          <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl} alt="player"/>
         </div>
         <div className="text-container">
           <h2 className="name">{song.name}</h2>
