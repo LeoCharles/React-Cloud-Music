@@ -2,12 +2,13 @@ import React, {useRef} from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { NormalPlayerContainer, Header, Body, CDWrapper, Footer, ProgressWrapper } from './style'
 import { getName, prefixStyle, formatePlayTime } from '@/utils'
+import { playMode } from '@/assets/config'
 import animations from 'create-keyframe-animation'
 import ProgressBar from 'components/ProgressBar'
 
 function NormalPlayer(props) {
-  const { song, fullScreen, playing, percent, duration, currentTime } = props
-  const { toggleFullScreen, togglePlaying, onProgressChange } = props
+  const { song, fullScreen, playing, percent, duration, currentTime, mode } = props
+  const { toggleFullScreen, togglePlaying, changeMode, onProgressChange, onPrev, onNext } = props
 
   const normalPlayerRef = useRef()
   const cdWrapperRef = useRef()
@@ -83,6 +84,19 @@ function NormalPlayer(props) {
     normalPlayerRef.current.style.display = 'none'
   }
 
+  // 切换播放模式图标
+  const getPlayMode = () => {
+    let content = ''
+    if (mode === playMode.sequence) {
+      content = '&#xe625'
+    } else if (mode === playMode.loop) {
+      content = '&#xe653'
+    } else {
+      content = '&#xe61b'
+    }
+    return content
+  }
+
   return (
     <CSSTransition
       classNames="normal"
@@ -121,16 +135,14 @@ function NormalPlayer(props) {
             <span className="time time-r">{formatePlayTime(duration)}</span>
           </ProgressWrapper>
           <div className="operators">
-            <div className="icon"><i className="iconfont">&#xe625;</i></div>
-            <div className="icon"><i className="iconfont">&#xe6e1;</i></div>
-            <div className="icon play">
-              <i
-                className="iconfont"
-                onClick={e => togglePlaying(e, !playing)}
-                dangerouslySetInnerHTML={{__html: playing ? '&#xe723;' : '&#xe731;'}}
-                ></i>
+            <div className="icon" onClick={changeMode}>
+              <i className="iconfont" dangerouslySetInnerHTML={{__html: getPlayMode()}}></i>
             </div>
-            <div className="icon"><i className="iconfont">&#xe718;</i></div>
+            <div className="icon" onClick={onPrev}><i className="iconfont">&#xe6e1;</i></div>
+            <div className="icon play" onClick={e => togglePlaying(e, !playing)}>
+              <i className="iconfont" dangerouslySetInnerHTML={{__html: playing ? '&#xe723;' : '&#xe731;'}}></i>
+            </div>
+            <div className="icon" onClick={onNext}><i className="iconfont">&#xe718;</i></div>
             <div className="icon"><i className="iconfont">&#xe640;</i></div>
           </div>
         </Footer>

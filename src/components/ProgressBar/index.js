@@ -36,7 +36,7 @@ const BarWrapper = styled.div `
 
 function ProgressBar(props) {
 
-  const [touch, setTouch] = useState()
+  const [touch, setTouch] = useState({})
 
   const progressBarRef = useRef()
   const progressRef = useRef()

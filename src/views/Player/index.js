@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
-import { getSongUrl, isEmptyObject } from '@/utils'
+import { getSongUrl, findSongIndex, shuffle, isEmptyObject } from '@/utils'
 
 function Player(props) {
 
@@ -11,6 +11,7 @@ function Player(props) {
   const [duration, setDuration] = useState(0) // 歌曲总时长
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
+  const [preSong, setPreSong] = useState({}) // 记录当前歌曲
   const [songReady, setSongReady] = useState(true)
   
   const audioRef = useRef()
@@ -19,18 +20,23 @@ function Player(props) {
     fullScreen,
     playing,
     currentIndex,
+    mode,
     currentSong: immutableCurrentSong,
     playList: immutablePlayList,
+    sequenceList: immutableSequenceList
   } = props
 
   const {
     toggleFullScreenDispatch,
     togglePlayingDispatch,
     changeCurrentIndexDispatch,
-    changeCurrentSongDispatch
+    changeCurrentSongDispatch,
+    changePlayListDispatch,
+    changeModeDispatch
   } = props
 
   const playList = immutablePlayList.toJS()
+  const sequenceList = immutableSequenceList.toJS()
   const currentSong = immutableCurrentSong.toJS()
 
   useEffect(() => {
@@ -38,16 +44,15 @@ function Player(props) {
       !playList.length || 
       currentIndex === -1 || 
       !playList[currentIndex] ||
-      !songReady
+      playList[currentIndex].id === preSong.id
     ) return
 
-    // 当前播放歌曲
-    const current = playList[currentIndex]
-    setSongReady(false)
+    const current = playList[currentIndex] // 当前播放歌曲
     changeCurrentSongDispatch(current)
+    setPreSong(current)
+    setSongReady(false)
 
-    // 获取 MP3 地址
-    audioRef.current.src = getSongUrl(current.id)
+    audioRef.current.src = getSongUrl(current.id) // 获取 MP3 地址
 
     setTimeout(() => {
       audioRef.current.play().then(() => {
@@ -55,12 +60,10 @@ function Player(props) {
       })
     })
 
-    // 播放状态
-    togglePlayingDispatch(true)
-    // 从头开始播放
-    setCurrentTime(0)
-    // 歌曲总时长
-    setDuration((current.dt / 1000) | 0)
+    togglePlayingDispatch(true) // 播放状态
+    setCurrentTime(0)  // 从头开始播放
+    setDuration((current.dt / 1000) | 0) // 歌曲总时长
+
     // eslint-disable-next-line
   }, [playList, currentIndex])
 
@@ -90,6 +93,58 @@ function Player(props) {
     }
   }
 
+  // 单曲循环
+  const handleLoop = () => {
+    audioRef.current.currentTime = 0
+    togglePlayingDispatch(true)
+    audioRef.current.play()
+  }
+
+  // 上一首
+  const handlePrev = () => {
+    if (playList.length === 1) {
+      handleLoop()
+      return
+    }
+    let index = currentIndex - 1
+    if (index < 0) index = playList.length - 1
+    if (!playing) togglePlayingDispatch(true)
+    changeCurrentIndexDispatch(index)
+  }
+
+  // 下一首
+  const handleNext = () => {
+    if (playList.length === 1) {
+      handleLoop()
+      return
+    }
+    let index = currentIndex + 1
+    if (index === playList.length) index = 0
+    if (!playing) togglePlayingDispatch(true) 
+    changeCurrentIndexDispatch(index)
+  }
+
+  // 切换播放播放模式
+  const changeMode = () => {
+    const newMode = (mode + 1) % 3
+    if (newMode === 0) {
+      // 顺序模式
+      const index = findSongIndex(currentSong, sequenceList)
+      changePlayListDispatch(sequenceList)
+      changeCurrentIndexDispatch(index)
+    } else if (newMode === 1) {
+      // 单曲循环
+      changePlayListDispatch(sequenceList)
+    } else if (newMode === 2) {
+      // 随机播放
+      const newList = shuffle(sequenceList)
+      const index = findSongIndex(currentSong, newList)
+      changePlayListDispatch(newList)
+      changeCurrentIndexDispatch(index)
+    }
+    changeModeDispatch(newMode)
+  }
+
   return (
     <div>
       { isEmptyObject(currentSong) ? null :
@@ -108,10 +163,14 @@ function Player(props) {
           duration={duration}
           currentTime={currentTime}
           percent={percent}
+          mode={mode}
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}
-          onProgressChange={handleProgressChange}/>
+          changeMode={changeMode}
+          onProgressChange={handleProgressChange}
+          onPrev={handlePrev}
+          onNext={handleNext}/>
       }
       <audio 
         ref={audioRef}
