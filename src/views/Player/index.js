@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
+import Toast from 'components/Toast'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
 import { getSongUrl, findSongIndex, shuffle, isEmptyObject } from '@/utils'
@@ -13,8 +14,10 @@ function Player(props) {
 
   const [preSong, setPreSong] = useState({}) // 记录当前歌曲
   const [songReady, setSongReady] = useState(true)
-  
+  const [modeText, setModeText] = useState('')
+
   const audioRef = useRef()
+  const toastRef = useRef()
 
   const {
     fullScreen,
@@ -132,17 +135,21 @@ function Player(props) {
       const index = findSongIndex(currentSong, sequenceList)
       changePlayListDispatch(sequenceList)
       changeCurrentIndexDispatch(index)
+      setModeText('顺序播放')
     } else if (newMode === 1) {
       // 单曲循环
       changePlayListDispatch(sequenceList)
+      setModeText('单曲循环')
     } else if (newMode === 2) {
       // 随机播放
       const newList = shuffle(sequenceList)
       const index = findSongIndex(currentSong, newList)
       changePlayListDispatch(newList)
       changeCurrentIndexDispatch(index)
+      setModeText('随机播放')
     }
     changeModeDispatch(newMode)
+    toastRef.current.show()
   }
 
   return (
@@ -176,6 +183,7 @@ function Player(props) {
         ref={audioRef}
         onTimeUpdate={updateTime}
       ></audio>
+      <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   )
 }
