@@ -8,13 +8,16 @@ const SongList = React.forwardRef((props, refs) => {
 
   const { collectCount, showCollect, songList } = props
   const { changePlayListDispatch, changeCurrentIndexDispatch, changeSequenceListDispatch} = props
+  const { musicAnimation } = props // 触发动画的回调
 
   const totalCount = songList.length
 
-  const selectItem = (e, index) => {
+  // 点击选择歌曲回调
+  const handleSelectSong = (e, index) => {
     changePlayListDispatch(songList)
     changeSequenceListDispatch(songList)
     changeCurrentIndexDispatch(index)
+    musicAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY)
   }
 
   // 渲染歌曲列表
@@ -23,7 +26,7 @@ const SongList = React.forwardRef((props, refs) => {
       <li
         className="item"
         key={index}
-        onClick={(e) => selectItem(e, index)}>
+        onClick={(e) => handleSelectSong(e, index)}>
         <span className="index">{index + 1}</span>
         <div className="info">
           <span className="name">{item.name}</span>

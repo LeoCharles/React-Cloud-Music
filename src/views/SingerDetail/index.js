@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
+import MusicNote from 'components/MusicNote'
 import SongList from 'views/SongList'
 import { Container, ImgWrapper, CollectBtn, SongListWrapper, BgLayer } from './style'
 import { HEADER_HEIGHT } from '@/assets/config'
@@ -18,7 +19,6 @@ function SingerDetail(props) {
   const artistJS = artist ? artist.toJS() : {}
   const songList = songs ? songs.toJS() : []
 
-
   const [showStatus, setShowStatus] = useState(true)
 
   const initialHeight = useRef(0) // 图片初始高度
@@ -27,6 +27,7 @@ function SingerDetail(props) {
   const songScrollWrapperRef = useRef()
   const songScrollRef = useRef()
   const bgLayerRef = useRef()
+  const musicNoteRef = useRef()
 
   const OFFSET = 5 // 向上偏移量，压住图片，露出歌曲列表圆角
 
@@ -89,6 +90,10 @@ function SingerDetail(props) {
     }
   }, [])
 
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y})
+  }
+
   return (
     <CSSTransition
       in={showStatus}
@@ -114,9 +119,13 @@ function SingerDetail(props) {
           <Scroll
             ref={songScrollRef}
             onScroll={handleScroll}>
-            <SongList songList={songList} showCollect={false}/>
+            <SongList 
+              songList={songList} 
+              showCollect={false}
+              musicAnimation={musicAnimation}/>
           </Scroll>
         </SongListWrapper>
+        <MusicNote ref={musicNoteRef}/>
         <Loading show={loading}/>
       </Container>
     </CSSTransition>

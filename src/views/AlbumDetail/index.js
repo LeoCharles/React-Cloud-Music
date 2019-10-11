@@ -4,6 +4,7 @@ import SongList from 'views/SongList'
 
 function AlbumDetail(props) {
   const { currentAlbum } = props
+  const { musicAnimation } = props // 触发动画的回调
 
   // 渲染歌单详情顶部介绍
   const renderToDesc = () => (
@@ -44,6 +45,7 @@ function AlbumDetail(props) {
     <SongList
       songList={currentAlbum.tracks}
       collectCount={currentAlbum.subscribedCount}
+      musicAnimation={musicAnimation}
       showCollect={true}
       showBackground={true}/>
   )

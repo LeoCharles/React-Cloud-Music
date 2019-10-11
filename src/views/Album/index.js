@@ -4,6 +4,7 @@ import * as actionCreators from './store/actions'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
+import MusicNote from 'components/MusicNote'
 import { CSSTransition } from 'react-transition-group' // 使用过渡动画
 import { Container } from './style'
 import AlbumDetail from 'views/AlbumDetail'
@@ -17,9 +18,10 @@ function Album(props) {
   const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
 
   const headerEl = useRef()
+  const musicNoteRef = useRef()
 
   const id = props.match.params.id  // 歌单 id
-  const { currentAlbum, enterLoading, songCount } = props
+  const { currentAlbum, enterLoading, pullUpLoading, songCount } = props
   const { getAlbumDetailDispatch } = props
 
   // 将 immutable 数据转换成 js 数据
@@ -63,6 +65,10 @@ function Album(props) {
     setShowStatus(false)
   }, [])
 
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y})
+  }
+
   // 注意: CSSTransition 组件的类名要加 s
   return (
     <CSSTransition
@@ -85,10 +91,13 @@ function Album(props) {
               pullUp={handlePullUp}
               pullUpLoading={false}
               bounceTop={false}>
-              <AlbumDetail currentAlbum={currentAlbumJS}/>
+              <AlbumDetail 
+                currentAlbum={currentAlbumJS}
+                musicAnimation={musicAnimation}/>
             </Scroll>) : null
           }
           <Loading show={enterLoading} />
+          <MusicNote ref={musicNoteRef}/>
       </Container>
     </CSSTransition>
   )
@@ -97,6 +106,7 @@ function Album(props) {
 const mapStateToProps = (state) => ({
   currentAlbum: state.getIn(['album', 'currentAlbum']),
   enterLoading: state.getIn(['album', 'enterLoading']),
+  pullUpLoading: state.getIn(['album', 'pullUpLoading']),
   songCount: state.getIn(['player', 'playList']).size
 })
 

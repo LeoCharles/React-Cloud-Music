@@ -12,6 +12,11 @@ export const changeEnterLoading = (data) => ({
   data
 })
 
+export const changePullUpLoading = (data) => ({
+  type: actionTypes.CHANGE_PULLUP_LOADING,
+  data
+})
+
 export const getAlbumDetail = (id) => {
   return (dispatch) => {
     getPlayListDetail(id).then(res => {
