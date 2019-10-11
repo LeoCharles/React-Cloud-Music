@@ -9,11 +9,11 @@ import { playMode } from '@/assets/config'
 
 function Player(props) {
 
-  const [currentTime, setCurrentTime] = useState(0)// 当前播放时长
-  const [duration, setDuration] = useState(0) // 歌曲总时长
+  const [currentTime, setCurrentTime] = useState(0) // 当前播放时长
+  const [duration, setDuration] = useState(0)       // 歌曲总时长
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
-  const [preSong, setPreSong] = useState({}) // 记录当前歌曲
+  const [preSong, setPreSong] = useState({})       // 记录当前歌曲
   const [songReady, setSongReady] = useState(true)
   const [modeText, setModeText] = useState('')
 
@@ -25,9 +25,9 @@ function Player(props) {
     playing,
     currentIndex,
     mode,
-    currentSong: immutableCurrentSong,
-    playList: immutablePlayList,
-    sequenceList: immutableSequenceList
+    currentSong: immutableCurrentSong,  // 当前歌曲
+    playList: immutablePlayList,        // 歌曲列表
+    sequenceList: immutableSequenceList // 顺序列表
   } = props
 
   const {
@@ -43,6 +43,7 @@ function Player(props) {
   const sequenceList = immutableSequenceList.toJS()
   const currentSong = immutableCurrentSong.toJS()
 
+  // 播放逻辑
   useEffect(() => {
     if (
       !playList.length || 
@@ -66,10 +67,9 @@ function Player(props) {
       })
     })
 
-    togglePlayingDispatch(true) // 播放状态
-    setCurrentTime(0)  // 从头开始播放
+    togglePlayingDispatch(true)          // 播放状态
+    setCurrentTime(0)                    // 从头开始播放
     setDuration((current.dt / 1000) | 0) // 歌曲总时长
-
     // eslint-disable-next-line
   }, [playList, currentIndex])
 
@@ -109,8 +109,7 @@ function Player(props) {
   // 上一首
   const handlePrev = () => {
     if (playList.length === 1) {
-      handleLoop()
-      return
+      return handleLoop()
     }
     let index = currentIndex - 1
     if (index < 0) index = playList.length - 1
@@ -121,8 +120,7 @@ function Player(props) {
   // 下一首
   const handleNext = () => {
     if (playList.length === 1) {
-      handleLoop()
-      return
+      return handleLoop()
     }
     let index = currentIndex + 1
     if (index === playList.length) index = 0
@@ -152,6 +150,7 @@ function Player(props) {
       setModeText('随机播放')
     }
     changeModeDispatch(newMode)
+    // 显示 toast
     toastRef.current.show()
   }
 
@@ -196,7 +195,7 @@ function Player(props) {
           onPrev={handlePrev}
           onNext={handleNext}/>
       }
-      <audio 
+      <audio
         ref={audioRef}
         onTimeUpdate={updateTime}
         onEnded={handleEnd}

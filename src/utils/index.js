@@ -60,7 +60,7 @@ export const getName = (list) => {
 
 // 拼接歌曲的 URL 
 export const getSongUrl = id => {
-  return `https://music.163.com/song/meida/outer/url?id=${id}.mp3`
+  return `https://music.163.com/song/media/outer/url?id=${id}.mp3`
 }
 
 // 格式化时间
