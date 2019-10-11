@@ -11,7 +11,7 @@ import { HEADER_HEIGHT } from '@/assets/config'
 
 function SingerDetail(props) {
 
-  const { artist, songs, loading } = props
+  const { artist, songs, loading, songCount } = props
   const { getSingerDetailDispatch } = props
 
   // 将 immutable 数据结构 转换成 JS 数据结构
@@ -97,7 +97,7 @@ function SingerDetail(props) {
       appear={true}
       unmountOnExit
       onExited={props.history.goBack}>
-      <Container>
+      <Container songCount={songCount}>
         <BackHeader
           title={artistJS.name}
           handleClick={handleBack}/>
@@ -126,7 +126,8 @@ function SingerDetail(props) {
 const mapStateToProps = (state) => ({
   artist: state.getIn(['singerDetail', 'artist']),
   songs: state.getIn(['singerDetail', 'songsOfArtist']),
-  loading: state.getIn(['singerDetail', 'loading'])
+  loading: state.getIn(['singerDetail', 'loading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({

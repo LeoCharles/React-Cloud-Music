@@ -19,7 +19,7 @@ function Album(props) {
   const headerEl = useRef()
 
   const id = props.match.params.id  // 歌单 id
-  const { currentAlbum, enterLoading } = props
+  const { currentAlbum, enterLoading, songCount } = props
   const { getAlbumDetailDispatch } = props
 
   // 将 immutable 数据转换成 js 数据
@@ -72,7 +72,7 @@ function Album(props) {
       appear={true}
       unmountOnExit
       onExited={props.history.goBack}>
-      <Container>
+      <Container songCount={songCount}>
         <BackHeader
           ref={headerEl}
           title={title}
@@ -96,7 +96,8 @@ function Album(props) {
 
 const mapStateToProps = (state) => ({
   currentAlbum: state.getIn(['album', 'currentAlbum']),
-  enterLoading: state.getIn(['album', 'enterLoading'])
+  enterLoading: state.getIn(['album', 'enterLoading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({

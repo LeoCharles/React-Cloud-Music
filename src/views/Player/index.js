@@ -5,6 +5,7 @@ import Toast from 'components/Toast'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
 import { getSongUrl, findSongIndex, shuffle, isEmptyObject } from '@/utils'
+import { playMode } from '@/assets/config'
 
 function Player(props) {
 
@@ -47,7 +48,8 @@ function Player(props) {
       !playList.length || 
       currentIndex === -1 || 
       !playList[currentIndex] ||
-      playList[currentIndex].id === preSong.id
+      playList[currentIndex].id === preSong.id ||
+      !songReady
     ) return
 
     const current = playList[currentIndex] // 当前播放歌曲
@@ -58,6 +60,7 @@ function Player(props) {
     audioRef.current.src = getSongUrl(current.id) // 获取 MP3 地址
 
     setTimeout(() => {
+      // play 方法返回以恶搞 promise 对象
       audioRef.current.play().then(() => {
         setSongReady(true)
       })
@@ -152,6 +155,20 @@ function Player(props) {
     toastRef.current.show()
   }
 
+  // 播放结束回调
+  const handleEnd = () => {
+    if (mode === playMode.loop) {
+      handleLoop()
+    } else {
+      handleNext()
+    }
+  }
+
+  // 播放错误回调
+  const handleError = () => {
+    console.log('播放器出错')
+  }
+
   return (
     <div>
       { isEmptyObject(currentSong) ? null :
@@ -182,6 +199,8 @@ function Player(props) {
       <audio 
         ref={audioRef}
         onTimeUpdate={updateTime}
+        onEnded={handleEnd}
+        onError={handleError}
       ></audio>
       <Toast text={modeText} ref={toastRef}></Toast>
     </div>

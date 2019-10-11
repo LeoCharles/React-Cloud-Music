@@ -10,7 +10,7 @@ import { Content } from './style'
 import Loading from 'components/Loading'
 
 function Recommend(props) {
-  const { bannerList, recommendList, enterLoading } = props
+  const { bannerList, recommendList, enterLoading, songCount } = props
   const { getBannerListDispatch, getRecommendListDispatch } = props
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function Recommend(props) {
   const recommendListJS = recommendList ? recommendList.toJS() : []
 
   return (
-    <Content>
+    <Content songCount={songCount}>
       <Loading show={enterLoading}/>
       <Scroll onScroll={forceCheck}>
         <div>
@@ -45,7 +45,8 @@ function Recommend(props) {
 const mapStateToProps = (state) => ({
   bannerList: state.getIn(['recommend', 'bannerList']),
   recommendList: state.getIn(['recommend', 'recommendList']),
-  enterLoading: state.getIn(['recommend', 'enterLoading'])
+  enterLoading: state.getIn(['recommend', 'enterLoading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,7 +5,7 @@ import global from '@/assets/global-style'
 export const Container = styled.div `
   position: fixed;
   top: 95px;
-  bottom: 0;
+  bottom: ${ props => props.songCount > 0 ? '60px' : 0};
   width: 100%;
   .offical, .global {
     margin-top: 10px;

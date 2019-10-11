@@ -12,7 +12,7 @@ import { renderRoutes } from 'react-router-config'
 function Singers(props) {
   const scrollRef = useRef(null) // 传入 ref 用于调用 scroll 组件的方法
 
-  const { category, alpha, singerList, pageCount, enterLoading, pullUpLoading, pullDownLoading } = props
+  const { category, alpha, singerList, pageCount, enterLoading, pullUpLoading, pullDownLoading, songCount } = props
 
   const { getHotSingerDispatch, updateCategoryDispatch, updateAlphaDispatch, pullUpDispatch, pullDownDispatch } = props
 
@@ -98,7 +98,7 @@ function Singers(props) {
           selected={alpha}
           onSelect={(item) => handeleSelectAlpha(item)}/>
       </NavContainer>
-      <SingerContainer>
+      <SingerContainer songCount={songCount}>
         <Scroll
           ref={scrollRef}
           onScroll={forceCheck}
@@ -122,6 +122,7 @@ const mapStateToProps = (state) => ({
   enterLoading: state.getIn(['singers', 'enterLoading']),
   pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
   pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({

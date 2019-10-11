@@ -3,7 +3,8 @@ import global from '@/assets/global-style'
 
 export const Container = styled.div `
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0; left: 0; right: 0;
+  bottom: ${ props => props.songCount > 0 ? '60px' : 0};
   width: 100%;
   z-index: 100;
   overflow: hidden;
