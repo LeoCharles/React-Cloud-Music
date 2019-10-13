@@ -6,13 +6,10 @@ import { getName } from '@/utils'
 
 function MiniPlayer(props) {
 
-  const  { song, fullScreen } = props
-  const { toggleFullScreen } = props
+  const  { song, fullScreen, playing, percent } = props
+  const { toggleFullScreen, togglePlaying } = props
 
   const miniPlayerRef = useRef()
-
-  const percent = 0.2
-
   return (
     <CSSTransition
       classNames="mini"
@@ -24,7 +21,7 @@ function MiniPlayer(props) {
         ref={miniPlayerRef}
         onClick={() => toggleFullScreen(true)}>
         <div className="mini-cd">
-          <img className="img play" src={song.al.picUrl} alt="player"/>
+          <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl} alt="player"/>
         </div>
         <div className="text-container">
           <h2 className="name">{song.name}</h2>
@@ -32,7 +29,11 @@ function MiniPlayer(props) {
         </div>
         <div className="control">
           <ProgressCircle radius={32} percent={percent}>
-            <i className="iconfont icon-mini icon-pause">&#xe650;</i>
+            { playing ?
+              <i className="iconfont icon-mini icon-pause" onClick={(e) => togglePlaying(e, false)}>&#xe650;</i>
+              :
+              <i className="iconfont icon-mini icon-play" onClick={(e) => togglePlaying(e, true)}>&#xe61e;</i>
+            }
           </ProgressCircle>
         </div>
         <div className="control"><i className="iconfont icon-playlist">&#xe640;</i></div>

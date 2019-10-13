@@ -3,7 +3,8 @@ import { fromJS } from 'immutable'
 
 const defaultState = fromJS({
   currentAlbum: {},
-  enterLoading: false
+  enterLoading: false,
+  pullUpLoading: false
 })
 
 export default (state = defaultState, action) => {
@@ -12,6 +13,8 @@ export default (state = defaultState, action) => {
       return state.set('currentAlbum', action.data)
     case actionTypes.CHANGE_ENTER_LOADING:
       return state.set('enterLoading', action.data)
+    case actionTypes.CHANGE_PULLUP_LOADING:
+      return state.set('pullUpLoading', action.data);
     default:
       return state
   }

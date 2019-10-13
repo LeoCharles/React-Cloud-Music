@@ -1,18 +1,23 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
 import { ListContainer, List} from './style'
 import { getName, getCount } from '@/utils'
-import { PAGE_COUNT } from '@/assets/config'
+import { changePlayList, changeCurrentIndex, changeSequenceList } from 'views/Player/store/actions'
 
 const SongList = React.forwardRef((props, refs) => {
 
-  const [pageIndex, setPageIndex] = useState(0)
-
   const { collectCount, showCollect, songList } = props
+  const { changePlayListDispatch, changeCurrentIndexDispatch, changeSequenceListDispatch} = props
+  const { musicAnimation } = props // 触发动画的回调
 
   const totalCount = songList.length
 
-  const selectItem = (item, index) => {
-
+  // 点击选择歌曲回调
+  const handleSelectSong = (e, index) => {
+    changePlayListDispatch(songList)
+    changeSequenceListDispatch(songList)
+    changeCurrentIndexDispatch(index)
+    musicAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY)
   }
 
   // 渲染歌曲列表
@@ -21,7 +26,7 @@ const SongList = React.forwardRef((props, refs) => {
       <li
         className="item"
         key={index}
-        onClick={(item) => selectItem(item, index)}>
+        onClick={(e) => handleSelectSong(e, index)}>
         <span className="index">{index + 1}</span>
         <div className="info">
           <span className="name">{item.name}</span>
@@ -59,4 +64,16 @@ const SongList = React.forwardRef((props, refs) => {
   )
 })
 
-export default React.memo(SongList)
+const mapDospatchToProps = (dispatch) => ({
+  changePlayListDispatch(data) {
+    dispatch(changePlayList(data))
+  },
+  changeCurrentIndexDispatch(index) {
+    dispatch(changeCurrentIndex(index))
+  },
+  changeSequenceListDispatch(data) {
+    dispatch(changeSequenceList(data))
+  }
+})
+
+export default connect(null, mapDospatchToProps)(React.memo(SongList))

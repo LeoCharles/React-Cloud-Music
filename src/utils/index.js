@@ -58,6 +58,44 @@ export const getName = (list) => {
   return str
 }
 
+// 拼接歌曲的 URL 
+export const getSongUrl = id => {
+  return `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+}
+
+// 格式化时间
+export const formatePlayTime = (interval) => {
+  interval = interval | 0
+  const minute = (interval / 60) | 0
+  const second = (interval % 60).toString().padStart(2, '0') // 字符串补全两位
+  return `${minute}:${second}`
+}
+
+// 获取当前歌曲索引
+export const findSongIndex = (song, list) => {
+  return list.findIndex(item => song.id === item.id)
+}
+
+// 获取随机整数
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+// 随机算法
+export const shuffle = (arr) => {
+  const new_arr = []
+  arr.forEach(item => {
+    new_arr.push(item)
+  })
+  for (let i = 0; i < new_arr.length; i++) {
+    let j = getRandomInt(0, i)
+    let temp = new_arr[i]
+    new_arr[i] = new_arr[j]
+    new_arr[j] = temp
+  }
+  return new_arr
+}
+
 // 使用 transform 属性判断浏览器厂商
 const getVendor = () => {
   const elStyle = document.createElement('div').style

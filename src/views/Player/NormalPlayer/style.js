@@ -159,5 +159,25 @@ export const Footer = styled.div `
 `
 
 export const ProgressWrapper  = styled.div `
-
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px 0;
+  .progress-bar-wrapper {
+    flex: 1;
+  }
+  .time {
+    color: ${global['font-color-desc']};
+    font-size: ${global['font-size-s']};
+    flex: 0 0 30px;
+    line-height: 30px;
+    width: 30px;
+    &.time-left {
+      text-align: left;
+    }
+    &.time-r {
+      text-align: right;
+    }
+  }
 `

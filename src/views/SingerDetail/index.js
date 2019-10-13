@@ -5,19 +5,19 @@ import { CSSTransition } from 'react-transition-group'
 import BackHeader from 'components/BackHeader'
 import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
+import MusicNote from 'components/MusicNote'
 import SongList from 'views/SongList'
 import { Container, ImgWrapper, CollectBtn, SongListWrapper, BgLayer } from './style'
 import { HEADER_HEIGHT } from '@/assets/config'
 
 function SingerDetail(props) {
 
-  const { artist, songs, loading } = props
+  const { artist, songs, loading, songCount } = props
   const { getSingerDetailDispatch } = props
 
   // 将 immutable 数据结构 转换成 JS 数据结构
   const artistJS = artist ? artist.toJS() : {}
   const songList = songs ? songs.toJS() : []
-
 
   const [showStatus, setShowStatus] = useState(true)
 
@@ -27,6 +27,7 @@ function SingerDetail(props) {
   const songScrollWrapperRef = useRef()
   const songScrollRef = useRef()
   const bgLayerRef = useRef()
+  const musicNoteRef = useRef()
 
   const OFFSET = 5 // 向上偏移量，压住图片，露出歌曲列表圆角
 
@@ -89,6 +90,10 @@ function SingerDetail(props) {
     }
   }, [])
 
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y})
+  }
+
   return (
     <CSSTransition
       in={showStatus}
@@ -97,7 +102,7 @@ function SingerDetail(props) {
       appear={true}
       unmountOnExit
       onExited={props.history.goBack}>
-      <Container>
+      <Container songCount={songCount}>
         <BackHeader
           title={artistJS.name}
           handleClick={handleBack}/>
@@ -114,9 +119,13 @@ function SingerDetail(props) {
           <Scroll
             ref={songScrollRef}
             onScroll={handleScroll}>
-            <SongList songList={songList} showCollect={false}/>
+            <SongList 
+              songList={songList} 
+              showCollect={false}
+              musicAnimation={musicAnimation}/>
           </Scroll>
         </SongListWrapper>
+        <MusicNote ref={musicNoteRef}/>
         <Loading show={loading}/>
       </Container>
     </CSSTransition>
@@ -126,7 +135,8 @@ function SingerDetail(props) {
 const mapStateToProps = (state) => ({
   artist: state.getIn(['singerDetail', 'artist']),
   songs: state.getIn(['singerDetail', 'songsOfArtist']),
-  loading: state.getIn(['singerDetail', 'loading'])
+  loading: state.getIn(['singerDetail', 'loading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({

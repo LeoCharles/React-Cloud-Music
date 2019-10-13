@@ -8,7 +8,7 @@ import { renderRoutes } from 'react-router-config'
 import { Container, RankList, ListItem, SongList } from './style'
 
 function Rank(props) {
-  const { rankList, loading } = props
+  const { rankList, loading, songCount } = props
   const { getRankListDispatch } = props
 
   const rankListJS = rankList ? rankList.toJS() : []
@@ -66,7 +66,7 @@ function Rank(props) {
   const displayStyle = loading ? {display: 'none'} : {display: 'block'}
 
   return (
-    <Container>
+    <Container songCount={songCount}>
       <Scroll>
         <div>
           <h1 className="offical" style={displayStyle}>官方榜</h1>
@@ -83,7 +83,8 @@ function Rank(props) {
 
 const mapStateToProps = (state) => ({
   rankList: state.getIn(['rank', 'rankList']),
-  loading: state.getIn(['rank', 'loading'])
+  loading: state.getIn(['rank', 'loading']),
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => ({
