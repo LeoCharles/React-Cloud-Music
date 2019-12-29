@@ -15,6 +15,7 @@ export const SingerContainer = styled.div `
   position: fixed;
   top: 160px;
   left: 0;
+  /* 判断是否有 mini 播放器 */
   bottom: ${ props => props.songCount > 0 ? '60px' : 0};
   width: 100%;
   overflow: hidden;

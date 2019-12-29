@@ -27,7 +27,7 @@ function SingerDetail(props) {
   const songScrollWrapperRef = useRef()
   const songScrollRef = useRef()
   const bgLayerRef = useRef()
-  const musicNoteRef = useRef()
+  const musicNoteRef = useRef()  // 音符掉落
 
   const OFFSET = 5 // 向上偏移量，压住图片，露出歌曲列表圆角
 
@@ -119,8 +119,8 @@ function SingerDetail(props) {
           <Scroll
             ref={songScrollRef}
             onScroll={handleScroll}>
-            <SongList 
-              songList={songList} 
+            <SongList
+              songList={songList}
               showCollect={false}
               musicAnimation={musicAnimation}/>
           </Scroll>

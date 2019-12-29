@@ -13,7 +13,7 @@ const ToastWrapper = styled.div `
     line-height: 50px;
     text-align: center;
     font-size: ${global['font-size-l']};
-    color: #fff;
+    color: ${ props => props.color ? props.color : '#fff'};
   }
   &.drop-enter {
     opacity: 0;
@@ -50,7 +50,7 @@ const Toast = forwardRef((props, ref) => {
   }))
 
   return (
-    <CSSTransition 
+    <CSSTransition
       in={show}
       timeout={300}
       classNames="drop"

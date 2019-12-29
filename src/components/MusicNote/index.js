@@ -20,13 +20,14 @@ const Container = styled.div `
   }
 `
 
+// 音符掉落
 const MusicNote = forwardRef((props, ref) => {
 
   const iconRef = useRef()
   const ICON_COUNT = 10
   const transform = prefixStyle('transform')
 
-  // 原生 DOM 操作
+  // 原生 DOM 操作，创建 DOM 节点
   const createNode = (html) => {
     const template = `<div class="icon-wrapper">${html}</div>`
     const tempNode = document.createElement('div')
@@ -64,7 +65,7 @@ const MusicNote = forwardRef((props, ref) => {
         item.style.left = x + 'px'
         item.style.top = y + 'px'
         item.style.display = 'inline-block'
-        // 放入定时器中 触发宏任务
+        // 用 setTimout 将动画逻辑放到下一次宏任务
         setTimeout(() => {
           item.running = true
           item.style[transform] = 'translate3d(0, 750px, 0)'

@@ -15,6 +15,7 @@ function Rank(props) {
 
   useEffect(() => {
     if (!rankListJS.lenght) {
+      // 获取排行榜列表
       getRankListDispatch()
     }
     // eslint-disable-next-line

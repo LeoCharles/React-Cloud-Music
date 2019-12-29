@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
 import { CSSTransition } from 'react-transition-group'
-import { NormalPlayerContainer, Header, Body, CDWrapper, Footer, ProgressWrapper } from './style'
+import { NormalPlayerContainer, Top, Middle, CDWrapper, Bottom, ProgressWrapper } from './style'
 import { getName, prefixStyle, formatePlayTime } from '@/utils'
 import { playMode } from '@/assets/config'
 import animations from 'create-keyframe-animation'
@@ -8,8 +8,9 @@ import ProgressBar from 'components/ProgressBar'
 
 function NormalPlayer(props) {
   const { song, fullScreen, playing, percent, duration, currentTime, mode } = props
-  const { toggleFullScreen, togglePlaying, changeMode, onProgressChange, onPrev, onNext } = props
+  const { toggleFullScreen, togglePlaying, togglePlayList, changeMode, onProgressChange, onPrev, onNext } = props
 
+  // 获取 DOM 对象
   const normalPlayerRef = useRef()
   const cdWrapperRef = useRef()
 
@@ -21,8 +22,8 @@ function NormalPlayer(props) {
     const width = window.innerWidth * 0.8  // 全屏 CD 宽度
     const cdTop = 120                      // 全屏 CD 定位的 top (80 + 40)
     const scale = miniWidth / width        // 全屏 CD 初始缩放比例
-    
-    // 初始状态将全屏 CD 移动到 mini CD 位置，再开始过渡
+
+    // 两个圆心的横坐标和纵坐标距离
     const x = -(window.innerWidth / 2 - miniLeft)   // 从全屏 CD 到 mini CD 的横轴偏移量（负数）
     const y = window.innerHeight - cdTop - width / 2 - miniBottom  // 纵轴偏移量（正数）
 
@@ -73,7 +74,7 @@ function NormalPlayer(props) {
     cdWrapperDom.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
     cdWrapperDom.style.transition = 'all 0.4s'
   }
-  
+
   // 离开之后
   const afterExit = () => {
     if (!cdWrapperRef.current) return
@@ -108,28 +109,30 @@ function NormalPlayer(props) {
       onExit={exit}
       onExited={afterExit}>
       <NormalPlayerContainer ref={normalPlayerRef}>
-        <div className="background"><img src={song.al.picUrl + "?param=300x300"} alt="bg"/></div>
+        <div className="background">
+          <img src={song.al.picUrl + "?param=300x300"} alt="bg"/>
+        </div>
         <div className="background layer"></div>
-        <Header className="header">
+        <Top className="top">
           <div className="back" onClick={() => toggleFullScreen(false)}>
             <i className="iconfont icon-back">&#xe662;</i>
           </div>
           <h1 className="title">{song.name}</h1>
           <h2 className="subtitle">{getName(song.ar)}</h2>
-        </Header>
-        <Body>
+        </Top>
+        <Middle>
           <CDWrapper ref={cdWrapperRef}>
             <div className="cd">
               <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl + "?param=400x400"} alt="play"/>
             </div>
           </CDWrapper>
-        </Body>
-        <Footer className="footer">
+        </Middle>
+        <Bottom className="bottom">
           <ProgressWrapper>
             <span className="time time-l">{formatePlayTime(currentTime)}</span>
             <div className="progress-bar-wrapper">
-              <ProgressBar 
-                percent={percent} 
+              <ProgressBar
+                percent={percent}
                 percentChange={onProgressChange}/>
             </div>
             <span className="time time-r">{formatePlayTime(duration)}</span>
@@ -143,9 +146,9 @@ function NormalPlayer(props) {
               <i className="iconfont" dangerouslySetInnerHTML={{__html: playing ? '&#xe723;' : '&#xe731;'}}></i>
             </div>
             <div className="icon" onClick={onNext}><i className="iconfont">&#xe718;</i></div>
-            <div className="icon"><i className="iconfont">&#xe640;</i></div>
+            <div className="icon" onClick={togglePlayList}><i className="iconfont">&#xe640;</i></div>
           </div>
-        </Footer>
+        </Bottom>
       </NormalPlayerContainer>
     </CSSTransition>
   )

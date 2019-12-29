@@ -10,23 +10,24 @@ const rotate = keyframes `
   }
 `
 
+// 全屏播放器
 export const NormalPlayerContainer = styled.div`
   position: fixed;
   left: 0; right: 0; top: 0; bottom: 0;
   z-index: 150;
   background-color: ${global['background-color']};
   &.normal-enter, &.normal-exit-done {
-    .header {
+    .top {
       transform: translateY(-100px);
     }
-    .footer {
+    .bottom {
       transform: translateY(100px);
     }
   }
   &.normal-enter-active, &.normal-exit-active {
     opacity: 1;
     transition: all 0.4s;
-    .header, .footer {
+    .top, .bottom {
       transform: translateY(0);
       transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
     }
@@ -34,6 +35,7 @@ export const NormalPlayerContainer = styled.div`
   &.normal-exit-active {
     opacity: 0;
   }
+  /* 播放器背景 */
   .background {
     position: absolute;
     top: 0; left: 0;
@@ -42,6 +44,7 @@ export const NormalPlayerContainer = styled.div`
     opacity: 0.6;
     filter: blur(20px);
     z-index: -1;
+    /* 背景加滤镜 */
     &.layer {
       background-color: ${global['background-color-desc']};
       opacity: 0.3;
@@ -53,8 +56,8 @@ export const NormalPlayerContainer = styled.div`
     }
   }
 `
-
-export const Header = styled.div `
+// 播放器顶部
+export const Top = styled.div `
   position: relative;
   margin-bottom: 25px;
   .back {
@@ -87,7 +90,8 @@ export const Header = styled.div `
   }
 `
 
-export const Body = styled.div `
+// 播放器中部
+export const Middle = styled.div `
   position: fixed;
   top: 80px; bottom: 170px;
   width: 100%;
@@ -131,7 +135,8 @@ export const CDWrapper = styled.div `
   }
 `
 
-export const Footer = styled.div `
+// 播放器底部
+export const Bottom = styled.div `
   position: absolute;
   bottom: 50px;
   width: 100%;
@@ -158,6 +163,7 @@ export const Footer = styled.div `
   }
 `
 
+// 进度条
 export const ProgressWrapper  = styled.div `
   display: flex;
   align-items: center;

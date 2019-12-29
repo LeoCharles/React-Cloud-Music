@@ -34,6 +34,7 @@ const BarWrapper = styled.div `
   }
 `
 
+// 线型进度条
 function ProgressBar(props) {
 
   const [touch, setTouch] = useState({})
@@ -75,9 +76,9 @@ function ProgressBar(props) {
   // 触摸进度条按钮
   const handleTouchStart = (e) => {
     const startTouch = {}
-    startTouch.initiated = true // 是否开始滑动
+    startTouch.initiated = true // 滑动动作开始
     startTouch.startX = e.touches[0].pageX // 触摸点的横坐标
-    startTouch.left = progressRef.current.clientWidth // 进度条宽度(初始为0)
+    startTouch.left = progressRef.current.clientWidth // 当前进度条长度(初始为0)
     setTouch(startTouch)
   }
 
@@ -85,8 +86,8 @@ function ProgressBar(props) {
   const handleTouchMove = (e) => {
     if(!touch.initiated) return
     const deltaX = e.touches[0].pageX - touch.startX  // 滑动的距离(向左滑动超出起始点为负数)
-    const barWidth = progressBarRef.current.clientWidth - progressBtnWidth // 进度条总长(减去了按钮的宽度)
-    const offsetWidth = Math.min(Math.max(0, touch.left + deltaX), barWidth) // 确保偏移量在 0 到 进度条总长之间
+    const barWidth = progressBarRef.current.clientWidth - progressBtnWidth // 进度条总长度(减去了按钮的宽度)
+    const offsetWidth = Math.min(Math.max(0, touch.left + deltaX), barWidth) // 确保偏移量在 0 到 进度条总长度之间
     _progressOffset(offsetWidth) // 实时修改进度条长度和按钮位置
   }
 

@@ -11,6 +11,7 @@ const rotate = keyframes `
   }
 `
 
+// mini player 从底部弹出
 export const MiniPlayerContainer = styled.div`
   position: fixed;
   left: 0; bottom: 0;
@@ -42,6 +43,7 @@ export const MiniPlayerContainer = styled.div`
       &.play {
         animation: ${rotate} 8s infinite linear;
         &.pause {
+          /* 暂停 */
           animation-play-state: paused;
         }
       }

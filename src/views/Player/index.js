@@ -4,6 +4,7 @@ import * as actionCreators from './store/actions'
 import Toast from 'components/Toast'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
+import PlayList from './PlayList'
 import { getSongUrl, findSongIndex, shuffle, isEmptyObject } from '@/utils'
 import { playMode } from '@/assets/config'
 
@@ -14,8 +15,8 @@ function Player(props) {
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
   const [preSong, setPreSong] = useState({})       // 记录当前歌曲
-  const [songReady, setSongReady] = useState(true)
-  const [modeText, setModeText] = useState('')
+  const [songReady, setSongReady] = useState(true) // 判断 audio 标签拿到 src 加载歌曲后，缓冲是否完成
+  const [modeText, setModeText] = useState('')     // toast 文字
 
   const audioRef = useRef()
   const toastRef = useRef()
@@ -33,6 +34,7 @@ function Player(props) {
   const {
     toggleFullScreenDispatch,
     togglePlayingDispatch,
+    togglePlayListDispatch,
     changeCurrentIndexDispatch,
     changeCurrentSongDispatch,
     changePlayListDispatch,
@@ -46,24 +48,28 @@ function Player(props) {
   // 播放逻辑
   useEffect(() => {
     if (
-      !playList.length || 
-      currentIndex === -1 || 
+      !playList.length ||
+      currentIndex === -1 ||
       !playList[currentIndex] ||
       playList[currentIndex].id === preSong.id ||
       !songReady
     ) return
 
-    const current = playList[currentIndex] // 当前播放歌曲
+    // 当前播放歌曲
+    const current = playList[currentIndex]
     changeCurrentSongDispatch(current)
     setPreSong(current)
-    setSongReady(false)
+    setSongReady(false) // 新的资源没有缓冲完成，不能切歌
 
-    audioRef.current.src = getSongUrl(current.id) // 获取 MP3 地址
+    // 拼接歌曲的 url 地址
+    audioRef.current.src = getSongUrl(current.id)
 
     setTimeout(() => {
-      // play 方法返回以恶搞 promise 对象
+      // audio 标签的 play 方法返回的是一个 promise 对象
       audioRef.current.play().then(() => {
         setSongReady(true)
+      }).catch(error => {
+        console.log(error)
       })
     })
 
@@ -124,7 +130,7 @@ function Player(props) {
     }
     let index = currentIndex + 1
     if (index === playList.length) index = 0
-    if (!playing) togglePlayingDispatch(true) 
+    if (!playing) togglePlayingDispatch(true)
     changeCurrentIndexDispatch(index)
   }
 
@@ -163,24 +169,27 @@ function Player(props) {
     }
   }
 
-  // 播放错误回调
+  // 播放错误回调，出错了播放下一首
   const handleError = () => {
-    console.log('播放器出错')
+    setSongReady(true)
+    handleNext()
+    alert('抱歉，未找到歌曲资源')
   }
 
   return (
     <div>
       { isEmptyObject(currentSong) ? null :
-        <MiniPlayer 
+        <MiniPlayer
           song={currentSong}
           playing={playing}
           percent={percent}
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
-          togglePlaying={togglePlaying}/>
+          togglePlaying={togglePlaying}
+          togglePlayList={togglePlayListDispatch}/>
       }
       { isEmptyObject(currentSong) ? null :
-        <NormalPlayer 
+        <NormalPlayer
           song={currentSong}
           playing={playing}
           duration={duration}
@@ -190,6 +199,7 @@ function Player(props) {
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}
+          togglePlayList={togglePlayListDispatch}
           changeMode={changeMode}
           onProgressChange={handleProgressChange}
           onPrev={handlePrev}
@@ -201,6 +211,7 @@ function Player(props) {
         onEnded={handleEnd}
         onError={handleError}
       ></audio>
+      <PlayList></PlayList>
       <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   )
@@ -236,7 +247,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleFullScreenDispatch(data) {
     dispatch(actionCreators.changeFullScreen(data))
   },
-  toggleShowPlayListDispatch(data) {
+  togglePlayListDispatch(data) {
     dispatch(actionCreators.changeShowPlayList(data))
   },
 })

@@ -91,7 +91,7 @@ function Album(props) {
               pullUp={handlePullUp}
               pullUpLoading={false}
               bounceTop={false}>
-              <AlbumDetail 
+              <AlbumDetail
                 currentAlbum={currentAlbumJS}
                 musicAnimation={musicAnimation}/>
             </Scroll>) : null

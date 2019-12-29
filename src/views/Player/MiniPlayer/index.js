@@ -7,7 +7,7 @@ import { getName } from '@/utils'
 function MiniPlayer(props) {
 
   const  { song, fullScreen, playing, percent } = props
-  const { toggleFullScreen, togglePlaying } = props
+  const { toggleFullScreen, togglePlaying, togglePlayList } = props
 
   const miniPlayerRef = useRef()
   return (
@@ -36,7 +36,7 @@ function MiniPlayer(props) {
             }
           </ProgressCircle>
         </div>
-        <div className="control"><i className="iconfont icon-playlist">&#xe640;</i></div>
+        <div className="control" onClick={e => {e.stopPropagation(); togglePlayList(true);}}><i className="iconfont icon-playlist">&#xe640;</i></div>
       </MiniPlayerContainer>
     </CSSTransition>
   )
