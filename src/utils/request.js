@@ -1,13 +1,11 @@
 import axios from 'axios'
 
-let baseURL = ''
-if (process.env.NODE_ENV !== 'production') {
-  // 开发环境
-  baseURL = 'http://localhost:3300'
-} else {
-  // 生产环境
-  baseURL = 'http://47.98.159.95/m-api'
+const api = {
+  'develop': 'http://localhost:3300',
+  'production': 'http://47.98.159.95/m-api',
 }
+
+const baseURL = api[process.env.NODE_ENV]
 
 const request = axios.create({
   baseURL: baseURL
