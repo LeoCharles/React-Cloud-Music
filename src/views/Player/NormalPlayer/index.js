@@ -146,7 +146,7 @@ function NormalPlayer(props) {
               <i className="iconfont" dangerouslySetInnerHTML={{__html: playing ? '&#xe723;' : '&#xe731;'}}></i>
             </div>
             <div className="icon" onClick={onNext}><i className="iconfont">&#xe718;</i></div>
-            <div className="icon" onClick={togglePlayList}><i className="iconfont">&#xe640;</i></div>
+            <div className="icon" onClick={e => togglePlayList(e, true)}><i className="iconfont">&#xe640;</i></div>
           </div>
         </Bottom>
       </NormalPlayerContainer>

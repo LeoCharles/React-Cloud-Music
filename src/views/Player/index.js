@@ -32,13 +32,13 @@ function Player(props) {
   } = props
 
   const {
-    toggleFullScreenDispatch,
-    togglePlayingDispatch,
-    togglePlayListDispatch,
-    changeCurrentIndexDispatch,
-    changeCurrentSongDispatch,
-    changePlayListDispatch,
-    changeModeDispatch
+    toggleFullScreenDispatch,    // 是否全屏
+    togglePlayingDispatch,       // 播放状态
+    togglePlayListDispatch,      // 是否显示播放列表
+    changeCurrentIndexDispatch,  // 当前歌曲索引
+    changeCurrentSongDispatch,   // 当前歌曲
+    changePlayListDispatch,      // 改变播放列表
+    changeModeDispatch           // 改变播放模式
   } = props
 
   const playList = immutablePlayList.toJS()
@@ -86,8 +86,14 @@ function Player(props) {
 
   // 切换播放和暂停
   const togglePlaying = (e, state) => {
-    e.stopPropagation();
+    e.stopPropagation()
     togglePlayingDispatch(state)
+  }
+
+  // 显示和隐藏播放列表
+  const toggleShowPlayList = (e, state) => {
+    e.stopPropagation()
+    togglePlayListDispatch(state)
   }
 
   // 时间更新
@@ -186,7 +192,7 @@ function Player(props) {
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}
-          togglePlayList={togglePlayListDispatch}/>
+          togglePlayList={toggleShowPlayList}/>
       }
       { isEmptyObject(currentSong) ? null :
         <NormalPlayer
@@ -199,7 +205,7 @@ function Player(props) {
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}
-          togglePlayList={togglePlayListDispatch}
+          togglePlayList={toggleShowPlayList}
           changeMode={changeMode}
           onProgressChange={handleProgressChange}
           onPrev={handlePrev}

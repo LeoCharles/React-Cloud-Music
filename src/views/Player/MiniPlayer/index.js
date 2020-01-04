@@ -30,13 +30,13 @@ function MiniPlayer(props) {
         <div className="control">
           <ProgressCircle radius={32} percent={percent}>
             { playing ?
-              <i className="iconfont icon-mini icon-pause" onClick={(e) => togglePlaying(e, false)}>&#xe650;</i>
+              <i className="iconfont icon-mini icon-pause" onClick={e => togglePlaying(e, false)}>&#xe650;</i>
               :
-              <i className="iconfont icon-mini icon-play" onClick={(e) => togglePlaying(e, true)}>&#xe61e;</i>
+              <i className="iconfont icon-mini icon-play" onClick={e => togglePlaying(e, true)}>&#xe61e;</i>
             }
           </ProgressCircle>
         </div>
-        <div className="control" onClick={e => {e.stopPropagation(); togglePlayList(true);}}><i className="iconfont icon-playlist">&#xe640;</i></div>
+        <div className="control" onClick={e => togglePlayList(e, true)}><i className="iconfont icon-playlist">&#xe640;</i></div>
       </MiniPlayerContainer>
     </CSSTransition>
   )

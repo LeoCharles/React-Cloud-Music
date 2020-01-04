@@ -31,7 +31,7 @@ export default (state = defaultState, action) => {
       return state.set('fullScreen', action.data)
     case actionTypes.CHANGE_SHOW_PLAYLIST:
       return state.set('showPlayList', action.data)
-    default: 
+    default:
       return state
   }
 }
