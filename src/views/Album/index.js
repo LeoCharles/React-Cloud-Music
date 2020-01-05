@@ -65,6 +65,7 @@ function Album(props) {
     setShowStatus(false)
   }, [])
 
+  // 设置音符掉落起始点
   const musicAnimation = (x, y) => {
     musicNoteRef.current.startAnimation({x, y})
   }

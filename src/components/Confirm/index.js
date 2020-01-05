@@ -76,7 +76,7 @@ const Confirm = forwardRef((props, ref) => {
   const [show, setShow] = useState(false)
   const {text, cancelBtnText, confirmBtnText} = props
 
-  const { handleConfirm } = props
+  const { confirm } = props
 
   // 对外暴露方法
   useImperativeHandle(ref, () => ({
@@ -85,15 +85,32 @@ const Confirm = forwardRef((props, ref) => {
     }
   }))
 
+  // 确定
+  const handleConfirm = (e) => {
+    e.stopPropagation()
+    setShow(false)
+    confirm()
+  }
+
   return (
-    <CSSTransition classNames="confirm-fade" timeout={300} appear={true} in={show}>
-      <ConfirmWrapper style={{display: 'block'}} onClick={e => e.stopPropagation()}>
+    <CSSTransition
+      in={show}
+      classNames="confirm-fade"
+      timeout={300}
+      appear={true}>
+      <ConfirmWrapper
+        style={{display: show ? 'block' : 'none'}}
+        onClick={e => e.stopPropagation()}>
         <div className="confirm">
           <div className="content">
             <p className="text">{text}</p>
             <div className="operate">
-              <span className="btn left" onClick={() => setShow(false)}>{cancelBtnText ? cancelBtnText : '取消'}</span>
-              <span className="btn" onClick={() => {handleConfirm(); setShow(false);}}>{confirmBtnText ? confirmBtnText : '确定'}</span>
+              <span className="btn left" onClick={() => setShow(false)}>
+                {cancelBtnText ? cancelBtnText : '取消'}
+              </span>
+              <span className="btn" onClick={handleConfirm}>
+                {confirmBtnText ? confirmBtnText : '确定'}
+              </span>
             </div>
           </div>
         </div>

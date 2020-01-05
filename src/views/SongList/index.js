@@ -14,9 +14,12 @@ const SongList = React.forwardRef((props, refs) => {
 
   // 点击选择歌曲回调
   const handleSelectSong = (e, index) => {
+    // 保存播放列表
     changePlayListDispatch(songList)
     changeSequenceListDispatch(songList)
+    // 切换歌曲
     changeCurrentIndexDispatch(index)
+    // 设置音符掉落起始点
     musicAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY)
   }
 

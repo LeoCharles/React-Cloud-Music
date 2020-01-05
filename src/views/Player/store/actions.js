@@ -40,3 +40,8 @@ export const changeShowPlayList = (data => ({
   type: actionTypes.CHANGE_SHOW_PLAYLIST,
   data
 }))
+
+export const deleteSong = (data => ({
+  type: actionTypes.DELETE_SONG,
+  data
+}))

@@ -76,10 +76,12 @@ export const List = styled.ul `
       border-bottom: 1px solid ${global['border-color']};
       overflow: hidden;
       .name {
+        line-height: 24px;
         color: ${global['font-color-desc']};
         ${global.noWrap()};
       }
       .singer {
+        line-height: 16px;
         font-size: ${global['font-size-s']};
         color: ${global['font-color-desc-v2']};
         ${global.noWrap()};

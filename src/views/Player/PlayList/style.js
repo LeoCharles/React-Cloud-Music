@@ -45,11 +45,61 @@ export const ScrollWrapper = styled.div `
 export const ListHeader = styled.div `
   position: relative;
   padding: 20px 30px 10px 20px;
+  .title {
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+    .mode {
+      flex: 1;
+      .text {
+        flex: 1;
+        font-size: ${global['font-size-m']};
+        color: ${global['font-color-desc']};
+      }
+    }
+    .iconfont {
+      margin-right: 10px;
+      font-size: ${global['font-size-ll']};
+      color: ${global['theme-color']};
+    }
+    .clear {
+      font-size: ${global['font-size-l']};
+      ${global.extendClick()};
+    }
+  }
 `
 
 // 播放列表
 export const ListContent = styled.ul `
   .item {
-
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 30px 0 30px;
+    overflow: hidden;
+    .text {
+      flex: 1;
+      line-height: 40px;
+      font-size: ${global['font-size-m']};
+      color: ${global['font-color-desc-v2']};
+      ${global.noWrap()};
+    }
+    .play {
+      flex: 0 0 20px;
+      width: 20px;
+      font-size: ${global['font-size-m']};
+      color: ${global['theme-color']};
+    }
+    .like {
+      margin: 0 15px 0 5px;
+      font-size: ${global['font-size-s']};
+      color: ${global['theme-color']};
+      ${global.extendClick()};
+    }
+    .delete {
+      font-size: ${global['font-size-s']};
+      color: ${global['theme-color']};
+      ${global.extendClick()};
+    }
   }
 `
