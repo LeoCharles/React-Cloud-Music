@@ -43,29 +43,23 @@ export const ScrollWrapper = styled.div `
 
 // 列表头部
 export const ListHeader = styled.div `
-  position: relative;
-  padding: 20px 30px 10px 20px;
-  .title {
-    display: flex;
-    align-items: center;
-    line-height: 20px;
-    .mode {
-      flex: 1;
-      .text {
-        flex: 1;
-        font-size: ${global['font-size-m']};
-        color: ${global['font-color-desc']};
-      }
+  display: flex;
+  align-items: center;
+  padding: 10px 30px 8px 20px;
+  .mode {
+    flex: 1;
+    height: 32px;
+    line-height: 32px;
+    .text {
+      font-size: ${global['font-size-m']};
+      color: ${global['font-color-desc']};
     }
-    .iconfont {
-      margin-right: 10px;
-      font-size: ${global['font-size-ll']};
-      color: ${global['theme-color']};
-    }
-    .clear {
-      font-size: ${global['font-size-l']};
-      ${global.extendClick()};
-    }
+  }
+  .iconfont {
+    margin-right: 10px;
+    font-size: ${global['font-size-ll']};
+    color: ${global['theme-color']};
+    ${global.extendClick()};
   }
 `
 

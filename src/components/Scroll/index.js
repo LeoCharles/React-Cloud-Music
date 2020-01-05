@@ -8,8 +8,21 @@ import { debounce } from '@/utils'
 
 // 使用 forwardRef 转发 ref，用于上层组件调用
 const Scroll = forwardRef((props, ref) => {
-  const { direction, click, refresh, pullUpLoading, pullDownLoading, bounceTop, bounceBottom } = props
-  const { onScroll, pullUp, pullDown } = props
+  const {
+    direction,
+    click,
+    refresh,
+    pullUpLoading,
+    pullDownLoading,
+    bounceTop,
+    bounceBottom
+  } = props
+
+  const {
+    onScroll,
+    pullUp,
+    pullDown
+  } = props
 
   // BScroll 实例对象
   const [bScroll, setBScroll] = useState(null)
@@ -138,15 +151,15 @@ Scroll.defaultProps = {
 // Scroll 接受的参数
 Scroll.propTypes = {
   direction: PropTypes.oneOf(['vertical', 'horizontal']), // 滚动方向
-  click: PropTypes.bool, // 是否支持点击
-  refresh: PropTypes.bool, // 是否刷新
-  onScroll: PropTypes.func, // 滚动事件回调
-  pullUp: PropTypes.func, // 上拉到底回调
-  pullDown: PropTypes.func, // 下拉到顶回调
-  pullUpLoading: PropTypes.bool, // 是否显示上拉 loading
-  pullDownLoading: PropTypes.bool, // 是否显示下拉 loading
-  bounceTop: PropTypes.bool, // 是否支持向上吸顶
-  bounceBottom: PropTypes.bool, // 是否支持向下吸顶
+  click: PropTypes.bool,                                  // 是否支持点击
+  refresh: PropTypes.bool,                                // 是否刷新
+  onScroll: PropTypes.func,                               // 滚动事件回调
+  pullUp: PropTypes.func,                                 // 上拉到底回调
+  pullDown: PropTypes.func,                               // 下拉到顶回调
+  pullUpLoading: PropTypes.bool,                          // 是否显示上拉 loading
+  pullDownLoading: PropTypes.bool,                        // 是否显示下拉 loading
+  bounceTop: PropTypes.bool,                              // 是否支持向上吸顶
+  bounceBottom: PropTypes.bool,                           // 是否支持向下吸顶
 }
 
 export default Scroll

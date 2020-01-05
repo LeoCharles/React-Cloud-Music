@@ -11,7 +11,17 @@ import { prefixStyle, getName, findSongIndex, shuffle } from '@/utils'
 
 function PlayList(props) {
 
+  // 是否显示播放列表
   const [isShow, setIsShow] = useState(false)
+  // 是否允许滑动事件生效
+  const [canTouch, setCanTouch] = useState(true)
+  // 是否开始滑动
+  const [isTouch, setIsTouch] = useState(false)
+  // touchStart 后记录 y 坐标
+  const [statrY, setStartY] = useState(0)
+  // 用户下滑的距离
+  const [distance, setDistance] = useState(0)
+
 
   const playListRef = useRef()
   const listWrapperRef = useRef()
@@ -69,6 +79,99 @@ function PlayList(props) {
     listWrapperRef.current.style[transform] = 'translate3d(0, 100%, 0)'
   }, [transform])
 
+  // 滑动开始
+  const handleTouchStart = (e) => {
+    if (!canTouch || isTouch) return
+    setIsTouch(true)
+    // 记录 y 坐标
+    const pageY = e.nativeEvent.touches[0].pageY
+    setStartY(pageY)
+    // 播放列表取消过渡，实时跟随向下移动
+    listWrapperRef.current.style['transition'] = ''
+  }
+
+  // 滑动中
+  const handleTouchMove = (e) => {
+    if (!canTouch || !isTouch) return
+    const pageY = e.nativeEvent.touches[0].pageY
+    const distance = pageY - statrY
+    // 如果向上滑动则直接返回
+    if (distance < 0) return
+    // 向下滑动时才记录滑动距离
+    setDistance(distance)
+    // 播放列表一起向下滑动
+    listWrapperRef.current.style[transform] = `translate3d(0, ${distance}px, 0)`
+  }
+
+  // 滑动结束
+  const handleTouchEnd = (e) => {
+    setIsTouch(false)
+    // 设置下拉反弹 阈值为 150px
+    if (distance > 150) {
+      // 下拉滑动距离大于 150px 则关闭播放列表
+      togglePlayListDispatch(false)
+    } else {
+      // 否则播放列表反弹回去
+      listWrapperRef.current.style['transition'] = 'all 0.3s'
+      listWrapperRef.current.style[transform] = 'translate3d(0, 0, 0)'
+    }
+    // 滑动距离重置为 0
+    setDistance(0)
+  }
+
+  // 滚动时的回调
+  const handleScroll = (pos) => {
+    // 只有当列表内容滚动距离为 0 时，才能下滑关闭播放列表
+    const state = pos.y === 0
+    setCanTouch(state)
+  }
+
+  // 点击切换歌曲
+  const handleChangeCurrenIndex = (e, index) => {
+    e.stopPropagation()
+    if (currentIndex === index) return
+    changeCurrentIndexDispatch(index)
+  }
+
+  // 删除一首歌
+  const handleDeleteSong = (e, song) => {
+    e.stopPropagation()
+    deleteSongDispatch(song)
+  }
+
+  // 删除列表
+  const handleClearList = () => {
+    // 显示确认删除弹框
+    confirmRef.current.show()
+  }
+
+  // 确定删除
+  const handleClearConfirm = () => {
+    clearLsitDispatch()
+  }
+
+  // 切换播放模式
+  const changeMode = (e) => {
+    const newMode = (mode + 1) % 3
+    if (newMode === 0) {
+      // 顺序
+      const index = findSongIndex(currentSong, sequenceList)
+      changeCurrentIndexDispatch(index)
+      changePlayListDispatch(sequenceList)
+    } else if (newMode === 1) {
+      // 单曲循环
+      changePlayListDispatch(sequenceList)
+    } else if (newMode === 2) {
+      // 随机播放
+      const newList = shuffle(sequenceList)
+      const index = findSongIndex(currentSong, newList)
+      changePlayListDispatch(newList)
+      changeCurrentIndexDispatch(index)
+    }
+    // 切换播放模式
+    changeModeDispatch(newMode)
+  }
+
   // 获取歌曲播放图标
   const getCurrentIcon = (item) => {
     // 判断是否是当前歌曲
@@ -101,52 +204,6 @@ function PlayList(props) {
     )
   }
 
-  // 切换播放模式
-  const changeMode = (e) => {
-    const newMode = (mode + 1) % 3
-    if (newMode === 0) {
-      // 顺序
-      const index = findSongIndex(currentSong, sequenceList)
-      changeCurrentIndexDispatch(index)
-      changePlayListDispatch(sequenceList)
-    } else if (newMode === 1) {
-      // 单曲循环
-      changePlayListDispatch(sequenceList)
-    } else if (newMode === 2) {
-      // 随机播放
-      const newList = shuffle(sequenceList)
-      const index = findSongIndex(currentSong, newList)
-      changePlayListDispatch(newList)
-      changeCurrentIndexDispatch(index)
-    }
-    // 切换播放模式
-    changeModeDispatch(newMode)
-  }
-
-  // 切歌
-  const handleChangeCurrenIndex = (e, index) => {
-    e.stopPropagation()
-    if (currentIndex === index) return
-    changeCurrentIndexDispatch(index)
-  }
-
-  // 删除一首歌
-  const handleDeleteSong = (e, song) => {
-    e.stopPropagation()
-    deleteSongDispatch(song)
-  }
-
-  // 删除列表
-  const handleClearList = () => {
-    // 显示确认删除弹框
-    confirmRef.current.show()
-  }
-
-  // 确定删除
-  const handleClearConfirm = () => {
-    clearLsitDispatch()
-  }
-
   return (
     <CSSTransition
       in={showPlayList}
@@ -159,19 +216,22 @@ function PlayList(props) {
       <PlayListWrapper
         ref={playListRef}
         style={isShow ? {display: 'block'} : {display: 'none'}}
-        onClick={() => togglePlayListDispatch(false)}>
+        onClick={() => togglePlayListDispatch(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}>
         <div
           className="list-wrapper"
           ref={listWrapperRef}
           onClick={e => e.stopPropagation()}>
           <ListHeader>
-            <h1 className="title">
-              { getPlayMode() }
-              <span className="iconfont clear" onClick={handleClearList}>&#xe63d;</span>
-            </h1>
+            { getPlayMode() }
+            <span className="iconfont clear" onClick={handleClearList}>&#xe63d;</span>
           </ListHeader>
           <ScrollWrapper>
-            <Scroll>
+            <Scroll
+              onScroll={handleScroll}
+              bounceTop={false}>
               <ListContent>
                 {
                   playList.map((item, index) => (

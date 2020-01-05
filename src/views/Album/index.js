@@ -21,7 +21,7 @@ function Album(props) {
   const musicNoteRef = useRef()
 
   const id = props.match.params.id  // 歌单 id
-  const { currentAlbum, enterLoading, pullUpLoading, songCount } = props
+  const { currentAlbum, enterLoading, songCount } = props
   const { getAlbumDetailDispatch } = props
 
   // 将 immutable 数据转换成 js 数据
@@ -55,11 +55,6 @@ function Album(props) {
     }
   }, [currentAlbumJS])
 
-  // 上拉
-  const handlePullUp = useCallback(() => {
-
-  }, [])
-
   // 返回
   const handleBack = useCallback(() => {
     setShowStatus(false)
@@ -89,7 +84,6 @@ function Album(props) {
             !isEmptyObject(currentAlbumJS) ?
             (<Scroll
               onScroll={handleScroll}
-              pullUp={handlePullUp}
               pullUpLoading={false}
               bounceTop={false}>
               <AlbumDetail
