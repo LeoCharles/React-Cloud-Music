@@ -17,12 +17,15 @@ export const changeEnterLoading = (data) => ({
   data
 })
 
+// 获取歌手详情
 export const getSingerDetail = (id) => {
   return (dispatch) => {
     getArtistsDetail(id).then(res => {
-      dispatch(changeArtist(res.artist))
-      dispatch(changeSongs(res.hotSongs))
-      dispatch(changeEnterLoading(false))
+      if (res.code === 200) {
+        dispatch(changeArtist(res.artist))
+        dispatch(changeSongs(res.hotSongs))
+        dispatch(changeEnterLoading(false))
+      }
     })
   }
 }

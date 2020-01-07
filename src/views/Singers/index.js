@@ -10,9 +10,11 @@ import { NavContainer, SingerContainer, SingerList, SingerItem } from './style'
 import { renderRoutes } from 'react-router-config'
 
 function Singers(props) {
-  const scrollRef = useRef(null) // 传入 ref 用于调用 scroll 组件的方法
 
-  const { category, alpha, singerList, pageCount, enterLoading, pullUpLoading, pullDownLoading, songCount } = props
+  // 传入 ref 用于调用 scroll 组件的方法
+  const scrollRef = useRef(null)
+
+  const { category, alpha, singerList, listOffset, isMore, enterLoading, pullUpLoading, pullDownLoading, songCount } = props
 
   const { getHotSingerDispatch, updateCategoryDispatch, updateAlphaDispatch, pullUpDispatch, pullDownDispatch } = props
 
@@ -26,9 +28,8 @@ function Singers(props) {
 
   // 歌手详情
   const enterDetail = (id) => {
-    if (id) {
-      props.history.push(`/singers/${id}`)
-    }
+    if (!id) return
+    props.history.push(`/singers/${id}`)
   }
 
   // 选择歌手分类
@@ -49,12 +50,16 @@ function Singers(props) {
 
   // 上拉加载下一页
   const handlePullUp = () => {
+    // 判断是否还有更多数据
+    if (!isMore) return
+    // 判断是否是热门歌手
     const isHot = !category && !alpha
-    pullUpDispatch(isHot, pageCount + 1)
+    pullUpDispatch(isHot, listOffset)
   }
 
   // 下拉刷新
   const handlePullDown = () => {
+    // 判断是否是热门歌手
     const isHot = !category && !alpha
     pullDownDispatch(isHot)
   }
@@ -118,7 +123,8 @@ const mapStateToProps = (state) => ({
   category: state.getIn(['singers', 'category']),
   alpha: state.getIn(['singers', 'alpha']),
   singerList: state.getIn(['singers', 'singerList']),
-  pageCount: state.getIn(['singers', 'pageCount']),
+  listOffset: state.getIn(['singers', 'listOffset']),
+  isMore: state.getIn(['singers', 'isMore']),
   enterLoading: state.getIn(['singers', 'enterLoading']),
   pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
   pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
@@ -133,22 +139,22 @@ const mapDispatchToProps = (dispatch) => ({
   },
   // 更新歌手分类，重新获取歌手列表
   updateCategoryDispatch(newVal) {
-    dispatch(actionCreators.changeCategory(newVal))   // 更新歌手分类
-    dispatch(actionCreators.changePageCount(0))       // 分页归零
-    dispatch(actionCreators.changeEnterLoading(true)) // 进场 loading
-    dispatch(actionCreators.getSingerList())          // 获取数据
+    dispatch(actionCreators.changeCategory(newVal))    // 更新歌手分类
+    dispatch(actionCreators.changeListOffset(0))       // 请求偏移量归零
+    dispatch(actionCreators.changeEnterLoading(true))  // 进场 loading
+    dispatch(actionCreators.getSingerList())           // 获取数据
   },
   // 更新首字母分类，重新获取歌手列表
   updateAlphaDispatch(newVal) {
-    dispatch(actionCreators.changeAlpha(newVal))      // 更新首字母分类
-    dispatch(actionCreators.changePageCount(0))       // 分页归零
-    dispatch(actionCreators.changeEnterLoading(true)) // 进场 loading
-    dispatch(actionCreators.getSingerList())          // 获取数据
+    dispatch(actionCreators.changeAlpha(newVal))       // 更新首字母分类
+    dispatch(actionCreators.changeListOffset(0))       // 请求偏移量归零
+    dispatch(actionCreators.changeEnterLoading(true))  // 进场 loading
+    dispatch(actionCreators.getSingerList())           // 获取数据
   },
   // 底部上拉加载更多
-  pullUpDispatch(isHot, nextPage) {
-    dispatch(actionCreators.changePullUpLoading(true)) // 加载更多 loading
-    dispatch(actionCreators.changePageCount(nextPage)) // 加载下一页
+  pullUpDispatch(isHot, listOffset) {
+    dispatch(actionCreators.changePullUpLoading(true))    // 加载更多 loading
+    dispatch(actionCreators.changeListOffset(listOffset)) // 加载下一页，传入偏移量
     if (isHot) {
       dispatch(actionCreators.getHotSingerList())
     } else {
@@ -157,8 +163,8 @@ const mapDispatchToProps = (dispatch) => ({
   },
   // 顶部下拉刷新
   pullDownDispatch(isHot) {
-    dispatch(actionCreators.changePullDownLoading(true)) // 刷新 loading
-    dispatch(actionCreators.changePageCount(0))          // 刷新分页归零
+    dispatch(actionCreators.changePullDownLoading(true))  // 刷新 loading
+    dispatch(actionCreators.changeListOffset(0))          // 刷新时请求偏移量归零
     if (isHot) {
       dispatch(actionCreators.getHotSingerList())
     } else {

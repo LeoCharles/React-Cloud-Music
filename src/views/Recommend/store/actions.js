@@ -17,21 +17,27 @@ export const changeEnterLoading = (data) => ({
   data
 })
 
+// 获取轮播图
 export const getBannerList = () => {
   return (dispatch) => {
     getBanner().then(res => {
-      dispatch(changeBanner(res.banners))
-      dispatch(changeEnterLoading(false))
+      if (res.code === 200) {
+        dispatch(changeBanner(res.banners))
+        dispatch(changeEnterLoading(false))
+      }
     }).catch(err => {
       console.log(err);
     })
   }
 }
 
+// 获取推荐列表
 export const getRecommendList = () => {
   return (dispatch) => {
     getRecommend().then(res => {
-      dispatch(changeRecommend(res.result))
+      if (res.code === 200) {
+        dispatch(changeRecommend(res.result))
+      }
     }).catch(err => {
       console.log(err);
     })

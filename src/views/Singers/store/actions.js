@@ -20,9 +20,9 @@ export const changeSingerList = (data) => ({
   data: fromJS(data)
 })
 
-// 修改当前页
-export const changePageCount = (data) => ({
-  type: actionTypes.CHANGE_PAGE_COUNT,
+// 修改请求偏移量
+export const changeListOffset = (data) => ({
+  type: actionTypes.CHANGE_LIST_OFFSET,
   data
 })
 
@@ -32,35 +32,41 @@ export const changeEnterLoading = (data) => ({
   data
 })
 
-// 上拉加载 loading
+// 底部上拉加载 loading
 export const changePullUpLoading = (data) => ({
   type: actionTypes.CHANGE_PULLUP_LOADING,
   data
 })
 
-// 下拉刷新 loading
+// 顶部下拉刷新 loading
 export const changePullDownLoading = (data) => ({
   type: actionTypes.CHANGE_PULLDOWN_LOADING,
   data
 })
 
-// 首次加载热门歌手
+// 是否有更多数据
+export const changeIsMore = (data) => ({
+  type: actionTypes.CHANGE_IS_MORE,
+  data
+})
+
+// 加载热门歌手
 export const getHotSingerList = () => {
   return (dispatch, getState) => {
-    const pageCount = getState().getIn(['singers', 'pageCount'])
+    const offset = getState().getIn(['singers', 'listOffset'])
     const singerList = getState().getIn(['singers', 'singerList']).toJS()
-    getTopArtists(pageCount).then(res => {
+
+    // 获取热门歌手
+    getTopArtists(offset).then(res => {
       if (res.code === 200) {
-        const data = pageCount === 0 ? res.artists : [...singerList, ...res.artists]
+        const {artists, more } = res
+        const data = offset === 0 ? artists : [...singerList, ...artists]
         dispatch(changeSingerList(data))
-        dispatch(changeEnterLoading(false))    // 关闭进场 loading
-        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
-        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
-      } else {
-        dispatch(changeSingerList([]))
-        dispatch(changeEnterLoading(false))    // 关闭进场 loading
-        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
-        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
+        dispatch(changeEnterLoading(false))     // 关闭进场 loading
+        dispatch(changePullDownLoading(false))  // 关闭下拉刷新 loading
+        dispatch(changePullUpLoading(false))    // 关闭上拉加载 loading
+        dispatch(changeListOffset(data.length)) // 修改偏移量
+        dispatch(changeIsMore(more))            // 是否还有更多数据
       }
     }).catch( err => {
       console.log(err)
@@ -73,21 +79,22 @@ export const getSingerList = () => {
   return (dispatch, getState) => {
     const category = getState().getIn(['singers', 'category'])
     const alpha = getState().getIn(['singers', 'alpha'])
-    const pageCount = getState().getIn(['singers', 'pageCount'])
+    const offset = getState().getIn(['singers', 'listOffset'])
     const singerList = getState().getIn(['singers', 'singerList']).toJS()
-    getArtistList(category, alpha, pageCount).then(res => {
+
+    // 获取歌手列表
+    getArtistList(category, alpha, offset).then(res => {
       if (res.code === 200) {
-        const data = pageCount === 0 ? res.artists : [...singerList, ...res.artists]
+        const {artists, more } = res
+        const data = offset === 0 ? artists : [...singerList, ...artists]
         dispatch(changeSingerList(data))
-        dispatch(changeEnterLoading(false))    // 关闭进场 loading
-        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
-        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
-      } else {
-        dispatch(changeSingerList([]))
-        dispatch(changeEnterLoading(false))    // 关闭进场 loading
-        dispatch(changePullUpLoading(false))   // 关闭上拉加载 loading
-        dispatch(changePullDownLoading(false)) // 关闭下拉刷新 loading
+        dispatch(changeEnterLoading(false))     // 关闭进场 loading
+        dispatch(changePullUpLoading(false))    // 关闭上拉加载 loading
+        dispatch(changePullDownLoading(false))  // 关闭下拉刷新 loading
+        dispatch(changeListOffset(data.length)) // 修改偏移量
+        dispatch(changeIsMore(more))            // 是否还有更多数据
       }
+
     }).catch(err => {
       console.log(err)
     })

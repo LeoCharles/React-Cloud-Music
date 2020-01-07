@@ -12,14 +12,12 @@ export const changeLoading = (data) => ({
   data
 })
 
+// 获取榜单列表
 export const getRankList = () => {
   return (dispatch) => {
     getTopListDetail().then(res => {
       if(res.code === 200) {
         dispatch(changeRankList(res.list))
-        dispatch(changeLoading(false))
-      } else {
-        dispatch(changeRankList([]))
         dispatch(changeLoading(false))
       }
     }).catch(err => {

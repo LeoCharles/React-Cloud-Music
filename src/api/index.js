@@ -11,13 +11,13 @@ export const getRecommend = () => {
 }
 
 // 获取热门歌手
-export const getTopArtists = (count) => {
-  return request.get(`/top/artists?offset=${count}`)
+export const getTopArtists = (offset) => {
+  return request.get(`/top/artists?offset=${offset}`)
 }
 
 // 获取歌手列表
-export const getArtistList = (category, alpha, count) => {
-  return request.get(`/artist/list?cat=${category}&initial=${alpha}&offset=${count}`)
+export const getArtistList = (category, alpha, offset) => {
+  return request.get(`/artist/list?cat=${category}&initial=${alpha}&offset=${offset}`)
 }
 
 // 获取榜单内容摘要
