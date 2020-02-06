@@ -165,7 +165,7 @@ export const LyricList = styled.div `
   .item {
     line-height: 32px;
     color: rgba(255, 255, 255, 0.5);
-    word-spacing: normal;
+    white-space: normal;
     font-size: ${global['font-size-l']};
     &.active {
       color: #fff;
