@@ -224,7 +224,7 @@ function Player(props) {
         lyricRef.current = new Lyric(lyric, handleLyric)
         // 开始播放歌词
         lyricRef.current.play()
-        lyricRef.current.seek(0)
+        // lyricRef.current.seek(0)
         setLyricIdx(0)
       }
     }).catch(() => {

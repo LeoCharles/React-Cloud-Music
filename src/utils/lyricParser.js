@@ -119,7 +119,6 @@ export default class Lyric {
    * @param {boolean} [isSeek=false] 是否手动调整进度
    */
   play(offset = 0, isSeek = false) {
-    console.log(this.lines)
     if (!this.lines.length) return
 
     this.state = STATE_PLAYING // 设置播放状态
