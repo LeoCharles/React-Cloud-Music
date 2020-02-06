@@ -5,7 +5,9 @@ import Toast from 'components/Toast'
 import MiniPlayer from './MiniPlayer'
 import NormalPlayer from './NormalPlayer'
 import PlayList from './PlayList'
+import { getLyricRequest } from '@/api'
 import { getSongUrl, findSongIndex, shuffle, isEmptyObject } from '@/utils'
+import Lyric from '@/utils/lyricParser'
 import { playMode } from '@/assets/config'
 
 function Player(props) {
@@ -17,9 +19,13 @@ function Player(props) {
   const [preSong, setPreSong] = useState({})       // 记录当前歌曲
   const [songReady, setSongReady] = useState(true) // 判断 audio 标签拿到 src 加载歌曲后，缓冲是否完成
   const [modeText, setModeText] = useState('')     // toast 文字
+  const [lyricTxt, setLyricTxt] = useState('')     // 当前播放的歌词
+  const [lyricIdx, setLyricIdx] = useState(0)      // 当前播放歌词的行号
 
-  const audioRef = useRef()
-  const toastRef = useRef()
+  const audioRef = useRef()   // 音频播放器
+  const toastRef = useRef()   // toast 组件
+  const lyricRef = useRef()   // 歌词解析实例
+
 
   const {
     fullScreen,
@@ -76,6 +82,7 @@ function Player(props) {
     togglePlayingDispatch(true)          // 播放状态
     setCurrentTime(0)                    // 从头开始播放
     setDuration((current.dt / 1000) | 0) // 歌曲总时长
+    getLyric(current.id)                 // 获取歌词
     // eslint-disable-next-line
   }, [playList, currentIndex])
 
@@ -88,6 +95,12 @@ function Player(props) {
   const togglePlaying = (e, state) => {
     e.stopPropagation()
     togglePlayingDispatch(state)
+
+    // 歌词切换播放 / 暂停
+    if(lyricRef.current) {
+      // 传递当前播放时间的毫秒数，即播放进度
+      lyricRef.current.togglePlay(currentTime * 1000)
+    }
   }
 
   // 显示和隐藏播放列表
@@ -108,6 +121,11 @@ function Player(props) {
     audioRef.current.currentTime = newTime
     if(!playing) {
       togglePlayingDispatch(true)
+    }
+
+    // 歌词进度更新
+    if(lyricRef.current) {
+      lyricRef.current.seek(newTime * 1000)
     }
   }
 
@@ -182,6 +200,47 @@ function Player(props) {
     alert('抱歉，未找到歌曲资源')
   }
 
+  // 获取歌词
+  const getLyric = id => {
+    // 判断是否已经有歌词解析实例，如果有先暂停
+    if (lyricRef.current) {
+      lyricRef.current.pause()
+    }
+
+    // 发送请求获取歌词
+    getLyricRequest(id).then(res => {
+      if (res.nolyric) {
+        lyricRef.current = null
+        setLyricTxt('')
+        return
+      } else {
+        const lyric = res.lrc.lyric
+        if (!lyric) {
+          lyricRef.current = null
+          setLyricTxt('')
+          return
+        }
+        // 解析歌词的实例
+        lyricRef.current = new Lyric(lyric, handleLyric)
+        // 开始播放歌词
+        lyricRef.current.play()
+        lyricRef.current.seek(0)
+        setLyricIdx(0)
+      }
+    }).catch(() => {
+      setSongReady(true)
+      audioRef.current.play()
+    })
+  }
+
+  // 处理歌词
+  const handleLyric = ({idx, txt}) => {
+    if(!lyricRef.current) return
+    // 当前播放的歌词
+    setLyricTxt(txt)
+    setLyricIdx(idx)
+  }
+
   return (
     <div>
       { isEmptyObject(currentSong) ? null :
@@ -202,6 +261,9 @@ function Player(props) {
           currentTime={currentTime}
           percent={percent}
           mode={mode}
+          lyric={lyricRef.current}
+          lyricTxt={lyricTxt}
+          lyricIdx={lyricIdx}
           fullScreen={fullScreen}
           toggleFullScreen={toggleFullScreenDispatch}
           togglePlaying={togglePlaying}

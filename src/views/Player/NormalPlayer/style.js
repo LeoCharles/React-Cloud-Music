@@ -42,12 +42,11 @@ export const NormalPlayerContainer = styled.div`
     width: 100%;
     height: 100%;
     opacity: 0.6;
+    /* 背景加滤镜 */
     filter: blur(20px);
     z-index: -1;
-    /* 背景加滤镜 */
     &.layer {
-      background-color: ${global['background-color-desc']};
-      opacity: 0.3;
+      background-color: rgba(0, 0, 0, 0.3);
       filter: none;
     }
     img {
@@ -97,7 +96,20 @@ export const Middle = styled.div `
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  .fade-enter {
+    opacity: 0;
+  }
+  .fade-enter-active {
+    opacity: 1;
+    transition: all 0.5s;
+  }
+  .fade-exit-active {
+    opacity: 0;
+    transition: all 0.5s;
+  }
 `
+
+// CD
 export const CDWrapper = styled.div `
   box-sizing: border-box;
   position: absolute;
@@ -125,13 +137,43 @@ export const CDWrapper = styled.div `
       }
     }
   }
-  .play-lyric {
+  .lyric {
     margin-top: 20px;
     font-size: 14px;
     line-height: 20px;
     text-align: center;
     white-space: normal;
+    color: #fff;
+  }
+`
+// 歌词
+export const LyricWrapper = styled.div `
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`
+
+export const LyricList = styled.div `
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  .item {
+    line-height: 32px;
     color: rgba(255, 255, 255, 0.5);
+    word-spacing: normal;
+    font-size: ${global['font-size-l']};
+    &.active {
+      color: #fff;
+    }
+    &.pure {
+      position: relative;
+      top: 30vh;
+    }
   }
 `
 

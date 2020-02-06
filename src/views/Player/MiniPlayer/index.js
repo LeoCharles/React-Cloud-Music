@@ -21,7 +21,7 @@ function MiniPlayer(props) {
         ref={miniPlayerRef}
         onClick={() => toggleFullScreen(true)}>
         <div className="mini-cd">
-          <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl} alt="player"/>
+          <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl ? song.al.picUrl : require('../../../assets/img/music.png')} alt="player"/>
         </div>
         <div className="text-container">
           <h2 className="name">{song.name}</h2>

@@ -27,7 +27,7 @@ function RecommendList(props) {
                 onClick={() => enterDetail(item.id)}>
                 <div className="img-wrapper">
                   <div className="decorate"></div>
-                  <LazyLoad placeholder={<img width="100%" height="100%" src={require('./music.png')} alt="music"/>}>
+                  <LazyLoad placeholder={<img width="100%" height="100%" src={require('../../assets/img/music.png')} alt="music"/>}>
                     <img src={item.picUrl + '?param=300x300'} width="100%" height="100%" alt="music" />
                   </LazyLoad>
                   <div className="play-count">

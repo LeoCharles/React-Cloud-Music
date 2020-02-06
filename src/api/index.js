@@ -34,3 +34,8 @@ export const getPlayListDetail = (id) => {
 export const getArtistsDetail = (id) => {
   return request.get(`/artists?id=${id}`)
 }
+
+// 获取歌词
+export const getLyricRequest = (id) => {
+  return request.get(`/lyric?id=${id}`)
+}

@@ -14,9 +14,11 @@ function Recommend(props) {
   const { getBannerListDispatch, getRecommendListDispatch } = props
 
   useEffect(() => {
+    // 判断是否有轮播图
     if (!bannerList.size) {
       getBannerListDispatch()
     }
+    // 判断是否有推荐列表
     if (!recommendList.size) {
       getRecommendListDispatch()
     }

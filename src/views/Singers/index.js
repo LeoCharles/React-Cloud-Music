@@ -155,21 +155,14 @@ const mapDispatchToProps = (dispatch) => ({
   pullUpDispatch(isHot, listOffset) {
     dispatch(actionCreators.changePullUpLoading(true))    // 加载更多 loading
     dispatch(actionCreators.changeListOffset(listOffset)) // 加载下一页，传入偏移量
-    if (isHot) {
-      dispatch(actionCreators.getHotSingerList())
-    } else {
-      dispatch(actionCreators.getSingerList())
-    }
+    isHot ? dispatch(actionCreators.getHotSingerList()) : dispatch(actionCreators.getSingerList())
   },
   // 顶部下拉刷新
   pullDownDispatch(isHot) {
     dispatch(actionCreators.changePullDownLoading(true))  // 刷新 loading
     dispatch(actionCreators.changeListOffset(0))          // 刷新时请求偏移量归零
-    if (isHot) {
-      dispatch(actionCreators.getHotSingerList())
-    } else {
-      dispatch(actionCreators.getSingerList())
-    }
+    isHot ? dispatch(actionCreators.getHotSingerList()) : dispatch(actionCreators.getSingerList())
+
   }
 })
 
