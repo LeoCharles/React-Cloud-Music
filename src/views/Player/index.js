@@ -66,6 +66,7 @@ function Player(props) {
     changeCurrentSongDispatch(current)
     setPreSong(current)
     setSongReady(false) // 新的资源没有缓冲完成，不能切歌
+    setLyricTxt('')
 
     // 拼接歌曲的 url 地址
     audioRef.current.src = getSongUrl(current.id)
@@ -90,6 +91,57 @@ function Player(props) {
   useEffect(() => {
     playing ? audioRef.current.play() : audioRef.current.pause()
   }, [playing])
+
+  // 切换全屏时显示当前歌词
+  useEffect(() => {
+    if (!fullScreen) return
+    if (lyricRef.current && lyricRef.current.lines.length) {
+      handleLyric({
+        idx: lyricIdx,
+        txt: lyricRef.current.lines[lyricIdx].txt
+      })
+    }
+  }, [fullScreen, lyricIdx])
+
+  // 获取歌词
+  const getLyric = id => {
+    // 判断是否已经有歌词解析实例，如果有先暂停
+    if (lyricRef.current) {
+      lyricRef.current.pause()
+    }
+
+    // 发送请求获取歌词
+    getLyricRequest(id).then(res => {
+      if (res.nolyric) {
+        lyricRef.current = null
+        setLyricTxt('')
+        return
+      } else {
+        const lyric = res.lrc.lyric
+        if (!lyric) {
+          lyricRef.current = null
+          setLyricTxt('')
+          return
+        }
+        // 解析歌词的实例
+        lyricRef.current = new Lyric(lyric, handleLyric)
+        // 开始播放歌词
+        lyricRef.current.play()
+        setLyricIdx(0)
+      }
+    }).catch(() => {
+      setSongReady(true)
+      audioRef.current.play()
+    })
+  }
+
+  // 处理歌词
+  const handleLyric = ({idx, txt}) => {
+    if(!lyricRef.current) return
+    // 当前播放的歌词
+    setLyricTxt(txt)
+    setLyricIdx(idx)
+  }
 
   // 切换播放和暂停
   const togglePlaying = (e, state) => {
@@ -134,6 +186,10 @@ function Player(props) {
     audioRef.current.currentTime = 0
     togglePlayingDispatch(true)
     audioRef.current.play()
+    // 歌词重新开始
+    if(lyricRef.current) {
+      lyricRef.current.seek(0)
+    }
   }
 
   // 上一首
@@ -200,46 +256,7 @@ function Player(props) {
     alert('抱歉，未找到歌曲资源')
   }
 
-  // 获取歌词
-  const getLyric = id => {
-    // 判断是否已经有歌词解析实例，如果有先暂停
-    if (lyricRef.current) {
-      lyricRef.current.pause()
-    }
 
-    // 发送请求获取歌词
-    getLyricRequest(id).then(res => {
-      if (res.nolyric) {
-        lyricRef.current = null
-        setLyricTxt('')
-        return
-      } else {
-        const lyric = res.lrc.lyric
-        if (!lyric) {
-          lyricRef.current = null
-          setLyricTxt('')
-          return
-        }
-        // 解析歌词的实例
-        lyricRef.current = new Lyric(lyric, handleLyric)
-        // 开始播放歌词
-        lyricRef.current.play()
-        // lyricRef.current.seek(0)
-        setLyricIdx(0)
-      }
-    }).catch(() => {
-      setSongReady(true)
-      audioRef.current.play()
-    })
-  }
-
-  // 处理歌词
-  const handleLyric = ({idx, txt}) => {
-    if(!lyricRef.current) return
-    // 当前播放的歌词
-    setLyricTxt(txt)
-    setLyricIdx(idx)
-  }
 
   return (
     <div>

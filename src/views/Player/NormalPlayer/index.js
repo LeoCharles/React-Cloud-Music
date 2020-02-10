@@ -49,7 +49,7 @@ function NormalPlayer(props) {
       bScroll.scrollToElement(lineEl, 1000)
     } else {
       // 当前歌词直接滚动到顶端
-      bScroll.scrollToElement(0, 0, 1000)
+      bScroll.scrollTo(0, 0, 1000)
     }
   }, [lyricIdx])
 
