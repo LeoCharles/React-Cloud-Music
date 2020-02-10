@@ -6,6 +6,7 @@ import Singers from 'views/Singers'
 import SingerDetail from 'views/SingerDetail'
 import Rank from 'views/Rank'
 import Album from 'views/Album'
+import Search from 'views/Search'
 
 // 路由表
 export default [
@@ -48,6 +49,12 @@ export default [
             component: Album
           }
         ]
+      },
+      {
+        path: '/search',
+        component: Search,
+        exact: true,
+        key: 'search'
       }
     ]
   }
