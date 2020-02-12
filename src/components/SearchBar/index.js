@@ -58,6 +58,7 @@ const SearchBar = (props) => {
 
   // 关键词变化时开始搜索
   useEffect(() => {
+    console.log(keyword)
     handleSearchDebounce(keyword)
   // eslint-disable-next-line
   }, [keyword])
@@ -65,9 +66,12 @@ const SearchBar = (props) => {
   // 父组件传入的搜索关键词
   useEffect(() => {
     if (query !== keyword) {
+      inputRef.current.value = query
       setKeyword(query)
     }
-  }, [keyword, query])
+    // 只监听 query
+    // eslint-disable-next-line
+  }, [query])
 
   // 监听输入框输入，更新搜索关键词
   const handleChange = (e) => {

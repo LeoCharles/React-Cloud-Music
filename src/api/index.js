@@ -39,3 +39,18 @@ export const getArtistsDetail = (id) => {
 export const getLyricRequest = (id) => {
   return request.get(`/lyric?id=${id}`)
 }
+
+// 获取热门搜索关键词
+export const getHotKeyWordsRequest = () => {
+  return request.get(`/search/hot`)
+}
+
+// 根据关键词搜索推荐列表
+export const getSuggestListRequest = (keywords) => {
+  return request.get(`/search/suggest?keywords=${keywords}`)
+}
+
+// 根据关键词搜索歌词列表
+export const getSongListRequest = (keywords) => {
+  return request.get(`/search?keywords=${keywords}`)
+}
