@@ -51,6 +51,6 @@ export const getSuggestListRequest = (keywords) => {
 }
 
 // 根据关键词搜索歌词列表
-export const getSongListRequest = (keywords) => {
+export const getResultSongsListRequest = (keywords) => {
   return request.get(`/search?keywords=${keywords}`)
 }

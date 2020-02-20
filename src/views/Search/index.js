@@ -1,4 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from './store/actions'
 import { CSSTransition } from 'react-transition-group'
 import SearchBar from '@/components/SearchBar'
 import { SearchWrapper } from './style'
@@ -7,6 +9,23 @@ function Search(props) {
 
   const [show, setShow] = useState(false) // 控制显示隐藏
   const [query, setQuery] = useState('')  // 查询关键词
+
+  const {
+    hotList,
+    suggestList: immutableSuggestList,
+    songsList: immutableSongsList,
+    enterLoading,
+    songsCount
+  } = props
+
+  const suggestList = immutableSuggestList.toJS()
+  const songsList = immutableSongsList.toJS()
+
+  const {
+    getHotKeyWordsDispatch,
+    getSuggestListDispatch,
+    changeEnterLoadingDispatch,
+  } = props
 
   useEffect(() => {
     setShow(true)
@@ -38,4 +57,26 @@ function Search(props) {
   )
 }
 
-export default Search
+const mapStateToProps = (state) => ({
+  hotList: state.getIn(['search', 'hotList']),
+  suggestList: state.getIn(['search', 'suggestList']),
+  songsList: state.getIn(['search', 'songsList']),
+  enterLoading: state.getIn(['search', 'enterLoading']),
+  songsCount: state.getIn(['player', 'playList']).size
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getHotKeyWordsDispatch() {
+      dispatch(actionCreators.getHotKeyWords())
+    },
+    getSuggestListDispatch(data) {
+      dispatch(actionCreators.getSuggestList(data))
+    },
+    changeEnterLoadingDispatch(data) {
+      dispatch(actionCreators.changeEnterLoading(data))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Search))
