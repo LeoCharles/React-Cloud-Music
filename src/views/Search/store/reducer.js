@@ -2,7 +2,7 @@ import * as actionTypes from './constants'
 import { fromJS } from 'immutable'
 
 const defaultState = fromJS({
-  hotList: [],         // 热门关键词列表
+  hotList: [],         // 热门搜索列表
   suggestList: [],     // 推荐列表，包括歌单和歌手
   songsList: [],       // 歌曲列表
   enterLoading: false,

@@ -51,6 +51,12 @@ export default [
         ]
       },
       {
+        path: '/album/:id',
+        component: Album,
+        exact: true,
+        key: 'album'
+      },
+      {
         path: '/search',
         component: Search,
         exact: true,

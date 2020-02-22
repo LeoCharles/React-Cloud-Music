@@ -2,7 +2,7 @@ import * as actionTypes from './constants'
 import { fromJS } from 'immutable'
 import { getHotKeyWordsRequest, getSuggestListRequest, getResultSongsListRequest } from '@/api'
 
-// 更新热门关键词
+// 更新热门搜索列表
 const changeHotKeysWords = (data) => ({
   type: actionTypes.CHANGE_HOT_KEYWORDS,
   data: fromJS(data)
