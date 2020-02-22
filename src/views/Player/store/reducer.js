@@ -38,6 +38,55 @@ const handleDeleteSong = (state, song) => {
   })
 }
 
+// 插入新歌曲
+const handleInsertSong = (state, song) => {
+  // 拷贝一份数据
+  const playList = JSON.parse(JSON.stringify(state.get('playList').toJS()))
+  const sequenceList = JSON.parse(JSON.stringify(state.get('sequenceList').toJS()))
+  let currentIndex = state.get('currentIndex')
+
+  // 查找播放列表中是否已有插入的歌曲
+  const insertIdx = findSongIndex(song, playList)
+  // 如果是当前播放的歌曲，则直接不处理
+  if(insertIdx === currentIndex && currentIndex !== -1) return state
+  // 否则，将新歌曲插入当前播放歌曲的下一首位置
+  currentIndex ++
+  playList.splice(currentIndex, 0, song)
+  // 如果播放列表中有要插入的歌曲，暂且称为旧歌曲
+  if(insertIdx > -1) {
+    // 判断已有的歌曲是否在当前播放歌曲前面
+    if (currentIndex > insertIdx) {
+      // 如果在前面，则删除旧歌曲，且当前索引减一
+      playList.splice(insertIdx, 1)
+      currentIndex --
+    } else {
+      // 如果在后面，则直接删除旧歌曲
+      playList.splice(insertIdx + 1, 1) // 因为插入了新歌曲，所以旧歌曲索引加一
+    }
+  }
+
+  // 同理，处理顺序播放列表
+  const insertIdx_s = findSongIndex(song, sequenceList)
+  let sequenceIdx = findSongIndex(playList[currentIndex], sequenceList)
+  sequenceIdx ++
+  // 插入新歌曲
+  sequenceList.splice(sequenceIdx, 0, song)
+  if (insertIdx_s > -1) {
+    if (sequenceIdx > insertIdx_s) {
+      sequenceList.splice(insertIdx_s, 1)
+      sequenceIdx --
+    } else {
+      sequenceList.splice(insertIdx_s + 1, 1)
+    }
+  }
+
+  return state.merge({
+    'playList': fromJS(playList),
+    'sequenceList': fromJS(sequenceList),
+    'currentIndex': fromJS(currentIndex)
+  })
+}
+
 export default (state = defaultState, action) => {
   switch(action.type) {
     case actionTypes.CHANGE_PLAY_LIST:
@@ -58,6 +107,8 @@ export default (state = defaultState, action) => {
       return state.set('showPlayList', action.data)
     case actionTypes.DELETE_SONG:
       return handleDeleteSong(state, action.data)
+    case actionTypes.INSERT_SONG:
+      return handleInsertSong(state, action.data)
     default:
       return state
   }

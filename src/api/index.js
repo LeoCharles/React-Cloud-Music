@@ -54,3 +54,8 @@ export const getSuggestListRequest = (keywords) => {
 export const getResultSongsListRequest = (keywords) => {
   return request.get(`/search?keywords=${keywords}`)
 }
+
+// 根据歌曲 id 获取歌曲详情
+export const getSongDetailRequest = (id) => {
+  return request.get(`/song/detail?ids=${id}`)
+}

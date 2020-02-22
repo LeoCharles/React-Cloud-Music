@@ -76,7 +76,7 @@ function Singers(props) {
               key={`${item.accountId}${index}`}
               onClick={() => enterDetail(item.id)}>
               <div className="img-wrapper">
-                <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="singer" />}>
+                <LazyLoad placeholder={<img width="100%" height="100%" src={require('../../assets/img/singer.png')} alt="singer" />}>
                   <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt={item.name} />
                 </LazyLoad>
               </div>

@@ -1,25 +1,29 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useCallback, useRef} from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from './store/actions'
+import { getSongDetail } from 'views/Player/store/actions'
 import { CSSTransition } from 'react-transition-group'
 import LazyLoad, { forceCheck } from 'react-lazyload'
 import SearchBar from '@/components/SearchBar'
 import Scroll from '@/components/Scroll'
 import Loading from '@/components/Loading'
+import MusicNote from '@/components/MusicNote'
 import { getName } from '@/utils'
-import { SearchWrapper, ShortcutWrapper, HotKeyWrapper, List, ListItem, SongList } from './style'
+import { Container, ShortcutWrapper, HotKeyWrapper, List, ListItem, SongList } from './style'
 
 function Search(props) {
 
   const [show, setShow] = useState(false) // 控制显示隐藏
   const [query, setQuery] = useState('')  // 查询关键词
 
+  const musicNoteRef = useRef()
+
   const {
     hotList,
     suggestList: immutableSuggestList,
     songsList: immutableSongsList,
     enterLoading,
-    songsCount
+    songCount
   } = props
 
   const suggestList = immutableSuggestList.toJS()
@@ -29,6 +33,7 @@ function Search(props) {
     getHotKeyWordsDispatch,
     getSuggestListDispatch,
     changeEnterLoadingDispatch,
+    getSongDetailDispatch
   } = props
 
   useEffect(() => {
@@ -56,7 +61,12 @@ function Search(props) {
 
   // 选择歌曲
   const selectSong = (e, id) => {
-    console.log(id)
+    getSongDetailDispatch(id)
+    // 调用 MusicNote 内部方法 startAnimation
+    musicNoteRef.current.startAnimation({
+      x: e.nativeEvent.clientX,
+      y: e.nativeEvent.clientY
+    })
   }
 
   // 渲染关键词列表
@@ -140,7 +150,6 @@ function Search(props) {
     )
   }
 
-
   return (
     <CSSTransition
       in={show}
@@ -149,7 +158,7 @@ function Search(props) {
       classNames="fly"
       unmountOnExit
       onExit={() => props.history.goBack()}>
-      <SearchWrapper>
+      <Container songCount={songCount}>
         <SearchBar back={handleBack} query={query} search={handleSearch}/>
         <ShortcutWrapper show={!query}>
           <Scroll>
@@ -162,7 +171,7 @@ function Search(props) {
           </Scroll>
         </ShortcutWrapper>
         <ShortcutWrapper show={query}>
-          <Scroll>
+          <Scroll onScorll={forceCheck}>
             <div>
               { renderSingers() }
               { renderAlbum() }
@@ -170,7 +179,9 @@ function Search(props) {
             </div>
           </Scroll>
         </ShortcutWrapper>
-      </SearchWrapper>
+        <MusicNote ref={musicNoteRef}/>
+        <Loading show={enterLoading}/>
+      </Container>
     </CSSTransition>
   )
 }
@@ -180,7 +191,7 @@ const mapStateToProps = (state) => ({
   suggestList: state.getIn(['search', 'suggestList']),
   songsList: state.getIn(['search', 'songsList']),
   enterLoading: state.getIn(['search', 'enterLoading']),
-  songsCount: state.getIn(['player', 'playList']).size
+  songCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = (dispatch) => {
@@ -193,6 +204,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     changeEnterLoadingDispatch(data) {
       dispatch(actionCreators.changeEnterLoading(data))
+    },
+    getSongDetailDispatch(id) {
+      dispatch(getSongDetail(id))
     }
   }
 }
