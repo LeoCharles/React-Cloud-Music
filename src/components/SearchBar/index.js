@@ -58,7 +58,6 @@ const SearchBar = (props) => {
 
   // 关键词变化时开始搜索
   useEffect(() => {
-    console.log(keyword)
     handleSearchDebounce(keyword)
   // eslint-disable-next-line
   }, [keyword])
@@ -81,6 +80,7 @@ const SearchBar = (props) => {
   // 清空搜索
   const clearSearch = () => {
     setKeyword('')
+    inputRef.current.value = ''
     inputRef.current.focus()
   }
 

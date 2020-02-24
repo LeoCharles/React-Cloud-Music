@@ -52,9 +52,9 @@ function Search(props) {
 
   // 更新查询关键词
   const handleSearch  = (query) => {
-    if(!query) return
     // 更新查询关键词
     setQuery(query)
+    if(!query) return
     changeEnterLoadingDispatch(true)
     getSuggestListDispatch(query)
   }
@@ -76,7 +76,7 @@ function Search(props) {
       <ul>
         {
           keywords.map(item => (
-            <li className="keyword" key={item.first} onClick={() => handleSearch(item.first)}>
+            <li className="keyword" key={item.first} onClick={() => setQuery(item.first)}>
               <span>{item.first}</span>
             </li>
           ))
@@ -96,7 +96,7 @@ function Search(props) {
           singers.map(item => (
             <ListItem key={item.accountId} onClick={() => props.history.push(`/singers/${item.id}`)}>
               <div className="img-wrapper">
-                <LazyLoad placeholder={<img height="100%" src={require('../../assets/img/singer.png')} alt="singer"/>}>
+                <LazyLoad placeholder={<img height="100%" className="img" src={require('../../assets/img/singer.png')} alt="singer"/>}>
                   <img className="img" src={item.picUrl} alt="singer"/>
                 </LazyLoad>
               </div>
@@ -119,8 +119,8 @@ function Search(props) {
           albums.map(item => (
             <ListItem key={item.id} onClick={() => props.history.push(`/album/${item.id}`)}>
               <div className="img-wrapper">
-                <LazyLoad placeholder={<img height="100%" src={require('../../assets/img/music.png')} alt=""/>}>
-                  <img className="img" src={item.coverImgUrl} alt=""/>
+                <LazyLoad placeholder={<img height="100%" className="img" src={require('../../assets/img/music.png')} alt="music"/>}>
+                  <img className="img" src={item.coverImgUrl} alt="music"/>
                 </LazyLoad>
               </div>
               <div className="name"> 歌单：{item.name}</div>
