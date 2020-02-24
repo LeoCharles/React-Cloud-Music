@@ -64,11 +64,12 @@ const SearchBar = (props) => {
 
   // 父组件传入的搜索关键词
   useEffect(() => {
+    let currKey = keyword
     if (query !== keyword) {
+      currKey = query
       inputRef.current.value = query
-      setKeyword(query)
     }
-    // 只监听 query
+    setKeyword(currKey)
     // eslint-disable-next-line
   }, [query])
 
