@@ -17,7 +17,7 @@ function Player(props) {
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
   const [preSong, setPreSong] = useState({})       // 记录当前歌曲
-  const [songReady, setSongReady] = useState(true) // 判断 audio 标签拿到 src 加载歌曲后，缓冲是否完成
+  const [songReady, setSongReady] = useState(true) // 记录是否准备好播放
   const [modeText, setModeText] = useState('')     // toast 文字
   const [lyricTxt, setLyricTxt] = useState('')     // 当前播放的歌词
   const [lyricIdx, setLyricIdx] = useState(0)      // 当前播放歌词的行号
@@ -61,24 +61,16 @@ function Player(props) {
       !songReady
     ) return
 
+    setSongReady(false)
     // 当前播放歌曲
     const current = playList[currentIndex]
     changeCurrentSongDispatch(current)
-    setPreSong(current)
-    setSongReady(false) // 新的资源没有缓冲完成，不能切歌
+    setPreSong(current) // 记录当前歌曲
     setLyricTxt('')
 
-    // 拼接歌曲的 url 地址
+    // 获取歌曲的 url 地址
     audioRef.current.src = getSongUrl(current.id)
-
-    setTimeout(() => {
-      // audio 标签的 play 方法返回的是一个 promise 对象
-      audioRef.current.play().then(() => {
-        setSongReady(true)
-      }).catch(error => {
-        console.log(error)
-      })
-    })
+    audioRef.current.autoplay = true
 
     togglePlayingDispatch(true)          // 播放状态
     setCurrentTime(0)                    // 从头开始播放
@@ -104,11 +96,15 @@ function Player(props) {
   }, [fullScreen, lyricIdx])
 
   // 获取歌词
-  const getLyric = id => {
+  const getLyric = (id) => {
     // 判断是否已经有歌词解析实例，如果有先暂停
     if (lyricRef.current) {
       lyricRef.current.pause()
     }
+    // 避免 songReady 一直为 false
+    setTimeout(() => {
+      setSongReady(true)
+    }, 1000)
 
     // 发送请求获取歌词
     getLyricRequest(id).then(res => {
@@ -117,7 +113,7 @@ function Player(props) {
         setLyricTxt('')
         return
       } else {
-        const lyric = res.lrc.lyric
+        const lyric = res.lrc && res.lrc.lyric
         if (!lyric) {
           lyricRef.current = null
           setLyricTxt('')
@@ -127,9 +123,13 @@ function Player(props) {
         lyricRef.current = new Lyric(lyric, handleLyric)
         // 开始播放歌词
         lyricRef.current.play()
+        // 设置歌词行号
         setLyricIdx(0)
       }
     }).catch(() => {
+      // 歌词获取失败也播放歌曲
+      lyricRef.current = null
+      setLyricTxt('')
       setSongReady(true)
       audioRef.current.play()
     })

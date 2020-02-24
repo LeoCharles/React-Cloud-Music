@@ -30,7 +30,7 @@ const handleDeleteSong = (state, song) => {
   // 在顺序列表中删除歌曲
   const delIdx_s = findSongIndex(song, sequenceList)
   sequenceList.splice(delIdx_s, 1)
-
+  console.log(currentIndex);
   return state.merge({
     playList: fromJS(playList),
     sequenceList: fromJS(sequenceList),
