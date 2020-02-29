@@ -164,8 +164,10 @@ function NormalPlayer(props) {
           <div className="back" onClick={() => toggleFullScreen(false)}>
             <i className="iconfont icon-back">&#xe662;</i>
           </div>
-          <h1 className="title">{song.name}</h1>
-          <h2 className="subtitle">{getName(song.ar)}</h2>
+          <div className="info">
+            <h1 className="title">{song.name}</h1>
+            <h2 className="subtitle">{getName(song.ar)}</h2>
+          </div>
         </Top>
         <Middle onClick={toggleShowLyric}>
           <CSSTransition
@@ -175,8 +177,12 @@ function NormalPlayer(props) {
             <CDWrapper
               ref={cdWrapperRef}
               style={{visibility: showLyric ? 'hidden' : 'visible'}}>
+              <div className={`needle ${playing ? '' : 'pause'}`}></div>
               <div className="cd">
-                <img className={`img play ${playing ? '' : 'pause'}`} src={song.al.picUrl ? song.al.picUrl + "?param=400x400" : require('../../../assets/img/music.png')} alt="play"/>
+                <img
+                  className={`img play ${playing ? '' : 'pause'}`}
+                  src={song.al.picUrl ? song.al.picUrl + "?param=400x400" : require('../../../assets/img/music.png')}
+                  alt="play"/>
               </div>
               <div className="lyric">
                 <p className="lyric-text">{lyricTxt}</p>
@@ -208,7 +214,6 @@ function NormalPlayer(props) {
                 </Scroll>
               </LyricWrapper>
           </CSSTransition>
-
         </Middle>
         <Bottom className="bottom">
           <ProgressWrapper>

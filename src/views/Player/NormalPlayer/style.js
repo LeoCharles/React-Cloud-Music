@@ -1,6 +1,9 @@
 import styled, { keyframes } from 'styled-components'
 import global from '@/assets/global-style'
+import cd from '@/assets/img/cd.png'
+import needle from '@/assets/img/needle.png'
 
+// 旋转动画
 const rotate = keyframes `
   0% {
     transform: rotate(0);
@@ -57,11 +60,15 @@ export const NormalPlayerContainer = styled.div`
 `
 // 播放器顶部
 export const Top = styled.div `
-  position: relative;
-  margin-bottom: 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  padding-bottom: 8px;
+  border: 2px solid ${global['border-color-v2']};
   .back {
-    position: absolute;
-    top: 0; left: 6px;
+    margin: 0 8px;
     .iconfont {
       display: block;
       padding: 9px;
@@ -71,28 +78,31 @@ export const Top = styled.div `
       transform: rotate(90deg);
     }
   }
-  .title {
-    width: 70%;
-    margin: 0 auto;
-    line-height: 40px;
-    font-size: ${global['font-size-l']};
-    color: ${global['font-color-desc']};
-    text-align: center;
-    ${global.noWrap()};
+  .info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .title {
+      line-height: 32px;
+      font-size: ${global['font-size-l']};
+      color: ${global['font-color-desc']};
+      ${global.noWrap()};
+    }
+    .subtitle {
+      line-height: 20px;
+      font-size: ${global['font-size-m']};
+      color: ${global['font-color-desc-v3']};
+      ${global.noWrap()};
+    }
   }
-  .subtitle {
-    line-height: 20px;
-    font-size: ${global['font-size-m']};
-    color: ${global['font-color-desc-v3']};
-    text-align: center;
-    ${global.noWrap()};
-  }
+
 `
 
 // 播放器中部
 export const Middle = styled.div `
   position: fixed;
-  top: 80px; bottom: 170px;
+  top: 60px;
+  bottom: 170px;
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
@@ -113,22 +123,51 @@ export const Middle = styled.div `
 export const CDWrapper = styled.div `
   box-sizing: border-box;
   position: absolute;
-  top: 40px; left: 0; right: 0;
-  width: 80vw;
-  height: 80vw;
-  margin: auto;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .needle {
+    position: absolute;
+    top: -6vw;
+    left: 48vw;
+    width: 25vw;
+    height: 40vw;
+    background-image: url(${needle});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 100;
+    transform: rotate(0);
+    transform-origin: 4.5vw 4.5vw;
+    transition: transform .5s;
+    /* 暂停时唱针旋转 */
+    &.pause {
+      transform: rotate(-30deg);
+    }
+  }
   .cd {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 18vw;
+    width: 70vw;
+    height: 70vw;
+    border: 10px solid ${global['border-color-v2']};
     border-radius: 50%;
+    background-image: url(${cd});
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     .img {
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
       position: absolute;
-      left: 0; top: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 70%;
+      height: 70%;
+      margin: auto;
       border-radius: 50%;
-      border: 10px solid rgba(255, 255, 255, 0.1);
     }
     .play {
       animation: ${rotate} 20s linear infinite;
@@ -138,7 +177,9 @@ export const CDWrapper = styled.div `
     }
   }
   .lyric {
-    margin-top: 20px;
+    position: absolute;
+    top: 100vw;
+    width: 80vw;
     font-size: 14px;
     line-height: 20px;
     text-align: center;

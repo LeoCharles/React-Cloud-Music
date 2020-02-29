@@ -23,6 +23,8 @@ const handleDeleteSong = (state, song) => {
 
   // 找到要删除的歌曲在当前播放列表中的索引
   const delIdx = findSongIndex(song, playList)
+  console.log(delIdx);
+  console.log(currentIndex);
   // 在播放列表中删除
   playList.splice(delIdx, 1)
   // 如果删除的歌曲在当前播放歌曲前面，则 currentIndex 减 1，让当前歌曲正常播放
@@ -30,7 +32,7 @@ const handleDeleteSong = (state, song) => {
   // 在顺序列表中删除歌曲
   const delIdx_s = findSongIndex(song, sequenceList)
   sequenceList.splice(delIdx_s, 1)
-  console.log(currentIndex);
+
   return state.merge({
     playList: fromJS(playList),
     sequenceList: fromJS(sequenceList),

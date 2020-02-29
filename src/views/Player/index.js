@@ -16,7 +16,7 @@ function Player(props) {
   const [duration, setDuration] = useState(0)       // 歌曲总时长
   const percent = isNaN(currentTime / duration) ? 0 : currentTime / duration // 播放进度
 
-  const [preSong, setPreSong] = useState({})       // 记录当前歌曲
+  const [currSong, setCurrSong] = useState({})       // 记录当前歌曲
   const [songReady, setSongReady] = useState(true) // 记录是否准备好播放
   const [modeText, setModeText] = useState('')     // toast 文字
   const [lyricTxt, setLyricTxt] = useState('')     // 当前播放的歌词
@@ -57,7 +57,7 @@ function Player(props) {
       !playList.length ||
       currentIndex === -1 ||
       !playList[currentIndex] ||
-      playList[currentIndex].id === preSong.id ||
+      playList[currentIndex].id === currSong.id ||
       !songReady
     ) return
 
@@ -65,7 +65,7 @@ function Player(props) {
     // 当前播放歌曲
     const current = playList[currentIndex]
     changeCurrentSongDispatch(current)
-    setPreSong(current) // 记录当前歌曲
+    setCurrSong(current) // 记录当前歌曲
     setLyricTxt('')
 
     // 获取歌曲的 url 地址

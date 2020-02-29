@@ -42,6 +42,7 @@ export default {
   'background-color-light': '#fff',
   'background-color-shadow': 'rgba(0, 0, 0, 0.3)',
   "border-color": '#e4e4e4',
+  "border-color-v2": 'rgba(228, 228, 228, 0.1)',
   'font-color-gray': '#808080',
   'font-color-light': '#f1f1f1',
   'font-color-desc': '#2E3030',

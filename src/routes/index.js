@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { lazy, Suspense} from 'react'
 import { Redirect } from 'react-router-dom'
 import Home from 'views/Home'
-import Recommend from 'views/Recommend'
-import Singers from 'views/Singers'
-import SingerDetail from 'views/SingerDetail'
-import Rank from 'views/Rank'
-import Album from 'views/Album'
-import Search from 'views/Search'
+
+// 懒加载组件
+const Recommend = lazy(() => import('views/Recommend'))
+const Singers = lazy(() => import('views/Singers'))
+const SingerDetail = lazy(() => import('views/SingerDetail'))
+const Rank = lazy(() => import('views/Rank'))
+const Album = lazy(() => import('views/Album'))
+const Search = lazy(() => import('views/Search'))
+
+// Suspense 让组件在渲染之前进行等待，并在等待时显示 fallback 的内容
+const SuspenseComponent = Component => props => {
+  return (
+    <Suspense fallback={null}>
+      <Component {...props}></Component>
+    </Suspense>
+  )
+}
 
 // 路由表
 export default [
@@ -21,44 +32,44 @@ export default [
       },
       {
         path: '/recommend',
-        component: Recommend,
+        component: SuspenseComponent(Recommend),
         routes: [
           {
             path: '/recommend/:id',
-            component: Album
+            component: SuspenseComponent(Album)
           }
         ]
       },
       {
         path: '/singers',
-        component: Singers,
+        component: SuspenseComponent(Singers),
         routes: [
           {
             path: '/singers/:id',
-            component: SingerDetail
+            component: SuspenseComponent(SingerDetail)
           }
         ]
       },
       {
         path: '/rank',
-        component: Rank,
+        component: SuspenseComponent(Rank),
         key: 'rank',
         routes: [
           {
             path: '/rank/:id',
-            component: Album
+            component: SuspenseComponent(Album)
           }
         ]
       },
       {
         path: '/album/:id',
-        component: Album,
+        component: SuspenseComponent(Album),
         exact: true,
         key: 'album'
       },
       {
         path: '/search',
-        component: Search,
+        component: SuspenseComponent(Search),
         exact: true,
         key: 'search'
       }
