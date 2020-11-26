@@ -29,3 +29,25 @@
 npm install
 npm run start
 ```
+
+## 项目演示
+
+推荐页
+
+![推荐](/screenshot/推荐.gif)
+
+歌手页
+
+![歌手](/screenshot/歌手.gif)
+
+排行榜
+
+![排行榜](/screenshot/排行榜.gif)
+
+播放器
+
+![播放器](/screenshot/播放器.gif)
+
+搜索页
+
+![搜索](/screenshot/搜索.gif)
