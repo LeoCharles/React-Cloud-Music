@@ -34,20 +34,20 @@ npm run start
 
 推荐页
 
-![推荐](/screenshot/推荐.gif)
+![推荐.gif](https://i.loli.net/2020/11/26/1agyAVURQnJ7ZpF.gif)
 
 歌手页
 
-![歌手](/screenshot/歌手.gif)
+![歌手.gif](https://i.loli.net/2020/11/26/lUnVs15QkGHpahE.gif)
 
 排行榜
 
-![排行榜](/screenshot/排行榜.gif)
+![排行榜.gif](https://i.loli.net/2020/11/26/6j3umXsEpoKqGge.gif)
 
 播放器
 
-![播放器](/screenshot/播放器.gif)
+![播放器.gif](https://i.loli.net/2020/11/26/hYqJncIfxHgV9ez.gif)
 
 搜索页
 
-![搜索](/screenshot/搜索.gif)
+![搜索.gif](https://i.loli.net/2020/11/26/maYcjIP1CGx9gRh.gif)
